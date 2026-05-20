@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>API Oficial WhatsApp — Guia de cadastro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #EFF2F9;
+      --bg-alt: #F7F9FC;
+      --surface: #FFFFFF;
+      --surface-soft: #E4EBF1;
+      --text: #3D4F5F;
+      --heading: #6E7F8D;
+      --muted: #8A9BAA;
+      --accent: #0D8F6F;
+      --accent-soft: #E6F5F1;
+      --meta: #1877F2;
+      --warn: #C47D0E;
+      --sidebar-w: 300px;
+      --radius: 20px;
+      --shadow-up: -6px -6px 16px #FAFBFF;
+      --shadow-down: 8px 8px 20px rgba(22, 27, 29, 0.1);
+      --shadow-card: var(--shadow-up), var(--shadow-down);
+      --max: 680px;
+      --topbar-h: 3.25rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-size: clamp(16px, 2.5vw, 18px);
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    img, svg, video, canvas { max-width: 100%; height: auto; }
+
+    body.modal-open { overflow: hidden; }
+
+  /* —— Sidebar (fechada por padrão) —— */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(22, 27, 29, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 190;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sidebar-backdrop.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: min(var(--sidebar-w), 92vw);
+      height: 100%;
+      height: 100dvh;
+      background: var(--surface);
+      border-right: 1px solid var(--surface-soft);
+      box-shadow: 4px 0 32px rgba(22, 27, 29, 0.12);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-header {
+      padding: 1.35rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--surface-soft);
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .sidebar-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.3;
+    }
+
+    .sidebar-summary {
+      margin-top: 0.85rem;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem 0.85rem 1.5rem;
+    }
+
+    .sidebar-nav::-webkit-scrollbar { width: 5px; }
+    .sidebar-nav::-webkit-scrollbar-thumb {
+      background: var(--surface-soft);
+      border-radius: 4px;
+    }
+
+    .nav-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .nav-group-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.35rem 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.45rem 0.65rem;
+      border-radius: 10px;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      line-height: 1.35;
+    }
+
+    .sidebar-nav a:hover {
+      background: var(--bg);
+      color: var(--heading);
+    }
+
+    .sidebar-nav a.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-nav a small {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .sidebar-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--heading);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .sidebar-close:hover {
+      background: var(--surface-soft);
+      color: var(--accent);
+    }
+
+    .sidebar-header { position: relative; padding-right: 2.75rem; }
+
+    .sidebar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 1.25rem;
+      left: 1.25rem;
+      z-index: 180;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--accent);
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease;
+    }
+
+    .sidebar-toggle:hover { transform: scale(1.04); }
+    .sidebar-toggle:active { transform: scale(0.97); }
+
+    /* Barra superior (mobile) — reserva espaço, nada fica por baixo */
+    .app-topbar {
+      display: none;
+    }
+
+    .app-topbar-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--heading);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+  /* —— Modal introdutório —— */
+    .intro-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+      background: rgba(22, 27, 29, 0.55);
+      backdrop-filter: blur(8px);
+      opacity: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
+    }
+
+    .intro-modal.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-modal-card {
+      width: 100%;
+      max-width: min(480px, 100%);
+      max-height: min(92dvh, 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--surface);
+      border-radius: var(--radius);
+      margin: auto;
+      box-shadow: 0 24px 64px rgba(22, 27, 29, 0.18);
+      transform: scale(0.96) translateY(12px);
+      animation: modalIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .intro-modal-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: 2rem 1.75rem 1rem;
+    }
+
+    .intro-modal-footer {
+      flex-shrink: 0;
+      padding: 0.85rem 1.75rem calc(1rem + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--surface-soft);
+      background: var(--surface);
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .intro-modal-footer .intro-modal-foot {
+      margin-bottom: 0.75rem;
+    }
+
+    @keyframes modalIn {
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .intro-modal-card h2 {
+      font-size: 1.75rem;
+      color: var(--heading);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+
+    .intro-modal-why {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      background: var(--accent-soft);
+      border-radius: 12px;
+    }
+
+    .intro-modal-why strong { color: #0a6b52; }
+
+    .intro-modal-lead {
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .intro-modal-steps {
+      list-style: none;
+      margin: 0 0 1.25rem;
+      padding: 0;
+      counter-reset: step;
+    }
+
+    .intro-modal-steps li {
+      position: relative;
+      padding: 0.6rem 0 0.6rem 2.5rem;
+      margin-bottom: 0.25rem;
+      font-size: 0.98rem;
+      line-height: 1.45;
+      border-bottom: 1px solid var(--surface-soft);
+      counter-increment: step;
+    }
+
+    .intro-modal-steps li:last-child { border-bottom: none; }
+
+    .intro-modal-steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 1.65rem;
+      height: 1.65rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.65rem;
+      text-align: center;
+    }
+
+    .intro-modal-steps strong {
+      display: block;
+      color: var(--heading);
+      font-size: 1rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .intro-modal-foot {
+      font-size: 0.95rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      line-height: 1.55;
+    }
+
+    .intro-modal-btn {
+      display: block;
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .intro-modal-btn:hover {
+      background: #0a7a5f;
+      transform: translateY(-1px);
+    }
+
+    .intro-modal-btn:active { transform: translateY(0); }
+
+    /* —— Main —— */
+    .main {
+      margin-left: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .progress-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--surface-soft);
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #25D366);
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .slide {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3.5rem clamp(1rem, 4vw, 2rem) 4rem;
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .slide:nth-child(even) { background: var(--bg-alt); }
+
+    .slide-inner {
+      width: 100%;
+      max-width: var(--max);
+      min-width: 0;
+    }
+
+    .panel {
+      width: 100%;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2.5rem 2.75rem;
+      box-shadow: var(--shadow-card);
+      opacity: 0;
+      transform: translateY(32px);
+      transition:
+        opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .panel.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .slide-label.concept { color: var(--meta); }
+    .slide-label.step { color: var(--accent); }
+    .slide-label.warn { color: var(--warn); }
+
+    h1 {
+      font-size: clamp(1.85rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 1.75rem);
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--surface-soft);
+    }
+
+    p { margin-bottom: 1.1rem; max-width: min(62ch, 100%); }
+    p:last-of-type { margin-bottom: 0; }
+
+    strong { color: #2A3A47; font-weight: 600; }
+
+    .panel a {
+      color: var(--meta);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    ul, ol { margin: 1rem 0 1.25rem 1.35rem; max-width: min(58ch, 100%); padding-right: 0.25rem; }
+    li { margin-bottom: 0.65rem; }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0; }
+    .chip {
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 10px;
+      background: var(--surface-soft);
+      color: var(--heading);
+    }
+    .chip.accent { background: var(--accent-soft); color: var(--accent); }
+
+    .formula {
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 1.15rem 1.35rem;
+      margin: 1.15rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--heading);
+      text-align: center;
+      box-shadow: inset 3px 3px 10px rgba(22,27,29,0.05), inset -3px -3px 10px #FAFBFF;
+    }
+
+    .callout {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 1rem 1.25rem;
+      margin: 1.15rem 0;
+      font-size: 1rem;
+    }
+
+    .callout.warn {
+      background: #FFF8EB;
+      border-left-color: #E6A020;
+    }
+
+    code {
+      font-size: 0.9em;
+      background: var(--surface-soft);
+      padding: 0.12em 0.4em;
+      border-radius: 5px;
+    }
+
+    .table-scroll {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1rem 0;
+    }
+
+    .id-table {
+      width: 100%;
+      min-width: 260px;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .id-table th, .id-table td {
+      text-align: left;
+      padding: 0.6rem 0.7rem;
+      border-bottom: 1px solid var(--surface-soft);
+    }
+
+    .id-table th { color: var(--heading); font-weight: 600; }
+
+    .slide-label.price { color: #0B6E4F; }
+
+    .price-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .flow-grid { display: grid; gap: 1rem; margin: 1.5rem 0; }
+
+    .flow-card {
+      border-radius: 16px;
+      padding: 1.25rem 1.35rem;
+      box-shadow: inset 3px 3px 10px rgba(22,27,29,0.04), inset -3px -3px 10px #FAFBFF;
+    }
+
+    .flow-card.free {
+      background: #E8F8F0;
+      border: 2px solid rgba(13, 143, 111, 0.35);
+    }
+
+    .flow-card.paid {
+      background: #FFF8EB;
+      border: 2px solid rgba(196, 125, 14, 0.35);
+    }
+
+    .flow-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .flow-card.free h3 { color: var(--accent); }
+    .flow-card.paid h3 { color: var(--warn); }
+
+    .flow-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    .flow-card.free .flow-badge { background: var(--accent); }
+    .flow-card.paid .flow-badge { background: var(--warn); }
+
+    .flow-arrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .price-highlight {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--heading);
+      word-break: break-word;
+    }
+
+    .price-note { font-size: 0.88rem; color: var(--muted); }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+      margin: 1.25rem 0;
+    }
+
+    @media (max-width: 520px) {
+      .cat-grid { grid-template-columns: 1fr; }
+    }
+
+    .cat-pill {
+      padding: 0.65rem 0.85rem;
+      border-radius: 12px;
+      background: var(--bg);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--heading);
+    }
+
+    .cat-pill span {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .why-template {
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 1.15rem 1.25rem;
+      margin: 1rem 0;
+    }
+
+    .why-template ol { margin-bottom: 0; }
+
+    .big-idea {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--heading);
+      line-height: 1.5;
+      margin: 1rem 0 1.25rem;
+      padding: 1rem 1.2rem;
+      background: var(--accent-soft);
+      border-radius: 14px;
+    }
+
+    .analogy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .analogy-grid { grid-template-columns: 1fr; }
+    }
+
+    .analogy-card {
+      border-radius: 16px;
+      padding: 1.2rem;
+      background: var(--bg);
+    }
+
+    .analogy-card.vitrine {
+      border: 2px solid rgba(24, 119, 242, 0.25);
+    }
+
+    .analogy-card.escritorio {
+      border: 2px solid rgba(13, 143, 111, 0.35);
+      background: #E8F8F0;
+    }
+
+    .analogy-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--heading);
+    }
+
+    .analogy-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .later-box {
+      margin-top: 1.5rem;
+      padding: 1rem 1.2rem;
+      border-radius: 14px;
+      background: var(--bg);
+      border: 1px dashed var(--surface-soft);
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    footer.slide {
+      min-height: 30vh;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* —— Tooltips (palavras difíceis) —— */
+    .tip-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tip-hint::before {
+      content: "ⓘ";
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .slide-next {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    .tip {
+      position: relative;
+      border-bottom: 1px dashed rgba(13, 143, 111, 0.55);
+      cursor: help;
+      color: #2A5F52;
+      font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tip:hover,
+    .tip:focus {
+      background: var(--accent-soft);
+      border-radius: 3px;
+      outline: none;
+    }
+
+    #glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      max-width: min(320px, calc(100vw - 2rem));
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--surface-soft);
+      border-radius: 12px;
+      box-shadow: var(--shadow-down), 0 0 0 1px rgba(255,255,255,0.8);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    #glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #glossary-tooltip strong {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    /* —— Mobile: tudo visível, sem cortar —— */
+    @media (max-width: 768px) {
+      html { scroll-snap-type: none; }
+
+      body { line-height: 1.6; font-size: 16px; }
+
+      .app-topbar {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 170;
+        height: calc(var(--topbar-h) + env(safe-area-inset-top));
+        padding: env(safe-area-inset-top) max(0.75rem, env(safe-area-inset-right)) 0 max(0.75rem, env(safe-area-inset-left));
+        background: var(--surface);
+        border-bottom: 1px solid var(--surface-soft);
+        box-shadow: 0 2px 12px rgba(22, 27, 29, 0.06);
+      }
+
+      .sidebar-toggle {
+        position: static;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+        box-shadow: none;
+        background: var(--bg);
+      }
+
+      .progress-wrap {
+        top: calc(var(--topbar-h) + env(safe-area-inset-top));
+      }
+
+      .main {
+        padding-top: calc(var(--topbar-h) + env(safe-area-inset-top));
+      }
+
+      .slide {
+        min-height: 0;
+        display: block;
+        padding: 1rem 0.75rem 1.75rem;
+      }
+
+      .slide-inner { margin: 0 auto; }
+
+      .panel {
+        padding: 1.15rem 1rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px rgba(22, 27, 29, 0.08);
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      h1 { font-size: 1.4rem; line-height: 1.25; margin-bottom: 0.65rem; }
+      h2 { font-size: 1.2rem; line-height: 1.3; }
+
+      .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0.85rem;
+        padding-bottom: 0.65rem;
+      }
+
+      p { margin-bottom: 0.85rem; line-height: 1.55; }
+
+      .big-idea { font-size: 0.98rem; padding: 0.75rem 0.85rem; margin: 0.75rem 0; }
+
+      .analogy-grid { gap: 0.65rem; margin: 0.75rem 0; }
+      .analogy-card { padding: 0.9rem; }
+
+      .intro-modal {
+        align-items: stretch;
+        padding: env(safe-area-inset-top) 0.5rem env(safe-area-inset-bottom);
+      }
+
+      .intro-modal-card {
+        max-height: 100%;
+        height: 100%;
+        border-radius: 14px;
+        margin: 0;
+        transform: none;
+        animation: none;
+      }
+
+      .intro-modal-scroll {
+        padding: 1.15rem 1rem 0.75rem;
+      }
+
+      .intro-modal-footer {
+        padding: 0.65rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+      }
+
+      .intro-modal-card h2 { font-size: 1.3rem; margin-bottom: 0.65rem; }
+
+      .intro-modal-why {
+        font-size: 0.88rem;
+        line-height: 1.5;
+        padding: 0.65rem 0.75rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .intro-modal-steps { margin-bottom: 0.75rem; }
+
+      .intro-modal-steps li {
+        font-size: 0.86rem;
+        padding: 0.5rem 0 0.5rem 2.2rem;
+        line-height: 1.4;
+      }
+
+      .intro-modal-steps strong { font-size: 0.92rem; }
+
+      .intro-modal-foot { font-size: 0.82rem; text-align: left; }
+
+      .intro-modal-btn { font-size: 1rem; padding: 0.8rem 1rem; }
+
+      .chip { font-size: 0.8rem; }
+      .chip-row { margin: 0.75rem 0; }
+
+      .formula { font-size: 0.88rem; padding: 0.75rem 0.85rem; }
+
+      .callout { font-size: 0.9rem; padding: 0.75rem 0.9rem; }
+
+      code { word-break: break-all; font-size: 0.85em; }
+
+      .panel a { word-break: break-word; }
+
+      ul, ol { margin-left: 1.1rem; }
+
+      footer.slide { padding: 1.5rem 0.75rem 2rem; }
+    }
+
+    @media (max-width: 380px) {
+      .intro-modal-steps li::before {
+        width: 1.45rem;
+        height: 1.45rem;
+        line-height: 1.45rem;
+        font-size: 0.75rem;
+      }
+
+      .intro-modal-steps li { padding-left: 2.1rem; }
+    }
+
+    /* —— Desktop: botão flutuante, sem barra —— */
+    @media (min-width: 769px) {
+      .app-topbar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        overflow: visible;
+        border: none;
+        background: transparent;
+        padding: 0;
+        z-index: 180;
+      }
+
+      .app-topbar-title { display: none; }
+
+      .sidebar-toggle {
+        position: fixed;
+        top: 1.25rem;
+        left: 1.25rem;
+      }
+    }
+
+    /* —— Desktop: mais respiro —— */
+    @media (min-width: 1024px) {
+      .slide { padding: 4rem 2.5rem 5rem; }
+      .panel { padding: 2.75rem 3rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; scroll-snap-type: none; }
+      .panel, .sidebar, .sidebar-backdrop, .intro-modal, .progress-bar {
+        transition: none;
+        animation: none;
+      }
+      .panel { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="intro-modal" id="intro-modal" role="dialog" aria-modal="true" aria-labelledby="intro-modal-title">
+    <div class="intro-modal-card">
+      <div class="intro-modal-scroll">
+        <h2 id="intro-modal-title">São 5 etapas</h2>
+        <p class="intro-modal-why">
+        <strong>Para quê?</strong> Para enviar mensagens para muitos clientes pelo WhatsApp oficial da Meta — com o número da sua empresa, sem ser bloqueado por spam. Não é cadastro de rede social: é liberar a API para disparo em massa.
+      </p>
+      <p class="intro-modal-lead">As 5 etapas que a Meta exige</p>
+      <ol class="intro-modal-steps">
+        <li>
+          <strong>Autenticar a empresa</strong>
+          Provar no Meta que o negócio é real (Portfolio / verificação).
+        </li>
+        <li>
+          <strong>Criar o acesso técnico</strong>
+          Registrar o App no Meta for Developers e ligar ao WhatsApp.
+        </li>
+        <li>
+          <strong>Conectar o número</strong>
+          Vincular o chip da empresa à API oficial (não é só ter WhatsApp no celular).
+        </li>
+        <li>
+          <strong>Aprovar as mensagens</strong>
+          Cada texto de disparo em massa precisa ser aprovado antes (template).
+        </li>
+        <li>
+          <strong>Vincular pagamento</strong>
+          Cadastrar cartão — a Meta cobra por mensagem entregue fora da janela de atendimento.
+        </li>
+      </ol>
+      </div>
+      <div class="intro-modal-footer">
+        <p class="intro-modal-foot">Quer entender cada passo com calma? Reserve 7 minutos para ler o guia completo.</p>
+        <button type="button" class="intro-modal-btn" id="intro-modal-btn">Começar o guia</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Índice do guia">
+    <div class="sidebar-header">
+      <button type="button" class="sidebar-close" id="sidebar-close" aria-label="Fechar índice">×</button>
+      <p class="sidebar-brand">WhatsApp Cloud API</p>
+      <p class="sidebar-title">WhatsApp oficial, em português claro</p>
+      <p class="sidebar-summary">
+        <strong>Ordem do guia:</strong> primeiro o porquê (empresa real, escritório, vitrine).
+        Depois o passo a passo técnico. Siglas e códigos só quando você já entendeu a lógica.
+      </p>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <div class="nav-group">
+        <p class="nav-group-label">Comece aqui (sem siglas)</p>
+        <a href="#s0">Por que tudo isso existe</a>
+        <a href="#s1">Vitrine vs escritório</a>
+        <a href="#s2">O Portfolio empresarial</a>
+        <a href="#s3">Mapa: onde clicar</a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-label">Opcional (detalhes)</p>
+        <a href="#s4">Business Suite</a>
+        <a href="#s5">Central de Contas</a>
+        <a href="#s6">Por que vários sites?</a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-label">Cadastro — 15 etapas</p>
+        <a href="#s7">1 · Começar cadastro</a>
+        <a href="#s8">2 · Página do Facebook</a>
+        <a href="#s9">3 · Instagram empresarial</a>
+        <a href="#s10">4 · Business Suite</a>
+        <a href="#s11">5 · Portfolio (BM)</a>
+        <a href="#s12">6 · Vincular ativos</a>
+        <a href="#s13">7 · Conta Developers</a>
+        <a href="#s14">8 · Criar o App</a>
+        <a href="#s15">9 · Função do App</a>
+        <a href="#s16">10 · WABA + API Setup</a>
+        <a href="#s17">11 · Phone Number ID</a>
+        <a href="#s18">12 · Token temp. vs permanente</a>
+        <a href="#s19">13 · System User + Bearer</a>
+        <a href="#s20">14 · Gerenciador WhatsApp</a>
+        <a href="#s21">15 · Próximos passos</a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-label">Preços e templates</p>
+        <a href="#s-price-0">Visão geral</a>
+        <a href="#s-price-1">Por que template?</a>
+        <a href="#s-price-2">Quando paga / não paga</a>
+        <a href="#s-price-3">Categorias e valores</a>
+        <a href="#s-price-4">O que é gratuito</a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-label">Fechamento</p>
+        <a href="#s22">Resumo dos IDs</a>
+      </div>
+    </nav>
+
+  </aside>
+
+  <header class="app-topbar">
+    <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir índice">☰</button>
+    <span class="app-topbar-title">Guia WhatsApp API</span>
+  </header>
+
+  <div class="main" id="main">
+    <div class="progress-wrap" aria-hidden="true">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <section class="slide" id="s0" data-title="Por quê">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Comece aqui</p>
+          <h1>Por que tudo isso existe?</h1>
+          <p class="subtitle">Antes de sigla, entenda o motivo</p>
+          <p>A documentação oficial da Meta muitas vezes parece escrita para robôs. Este guia faz o contrário: <strong>primeiro o mundo real</strong>, depois os cliques.</p>
+          <p class="big-idea">Para enviar mensagem para muitos clientes sem o número ser bloqueado por spam, o WhatsApp exige uma coisa básica: <strong>provar que você é uma empresa séria e real</strong>.</p>
+          <p>Não é frescura. Antigamente qualquer perfil falso disparava mensagem e anúncio. A Meta criou regras para separar:</p>
+          <ul>
+            <li><strong>Você pessoa</strong> (perfil pessoal) — como CPF</li>
+            <li><strong>Sua empresa</strong> (negócio com responsabilidade) — como CNPJ</li>
+          </ul>
+          <p>O pilar central é construir o <strong>escritório administrativo</strong> da empresa dentro da Meta. Só depois vêm os códigos técnicos.</p>
+          <p class="slide-next">Próximo: vitrine vs escritório</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s1" data-title="Vitrine">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Comece aqui</p>
+          <h2>Vitrine vs escritório</h2>
+          <p class="subtitle">Não é a mesma coisa — leia com calma</p>
+          <p>O <strong>Portfolio empresarial</strong> (antigo BM) <em>não é</em> só juntar Instagram com Página do Facebook.</p>
+          <div class="analogy-grid">
+            <div class="analogy-card vitrine">
+              <p class="emoji">🪟</p>
+              <h3>Vitrine (o público vê)</h3>
+              <p>Página do Facebook + Instagram. Cliente vê post e foto. Painel do dia a dia: <strong>Meta Business Suite</strong>.</p>
+            </div>
+            <div class="analogy-card escritorio">
+              <p class="emoji">🏢</p>
+              <h3>Escritório (nos fundos)</h3>
+              <p><strong>Portfolio</strong> = cofre: dono da Página, Insta, WhatsApp, cartão, acessos da equipe. Cliente nunca vê.</p>
+            </div>
+          </div>
+          <p class="later-box">Siglas (WABA, token, IDs) vêm depois — são só números desse escritório.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s2" data-title="Portfolio">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Comece aqui</p>
+          <h2>O Portfolio empresarial</h2>
+          <p class="subtitle">Quem ainda fala BM (Business Manager) está falando da mesma coisa</p>
+          <p>O Portfolio é o CNPJ digital da sua empresa dentro da Meta. É uma pasta nos bastidores onde ficam registrados o dono da Página, do Instagram, do número de WhatsApp, da forma de pagamento e quem da equipe pode entrar em cada parte.</p>
+          <p>Você precisa dele porque a Meta não libera disparo em massa para pessoa física. Com o Portfolio você diz ao WhatsApp: sou empresa real, com documentação e responsabilidade sobre essas mensagens. É a licença para operar na API oficial.</p>
+          <p>Lá dentro entram a empresa e os funcionários. Dá para dar acesso para alguém responder mensagens sem entregar o cartão de crédito — crachá da porta da frente não é chave do cofre.</p>
+          <p>Nenhum cliente vê o Portfolio. Na prática você cria a sede com os dados da empresa e depois puxa a Página e o Instagram para dentro, como quem diz: essas vitrines agora pertencem a este escritório. As configurações ficam em <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">business.facebook.com/settings</a>.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s3" data-title="Mapa">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Mapa simples</p>
+          <h2>Onde clicar (visão geral)</h2>
+          <p class="subtitle">Três lugares, três funções</p>
+          <p>O <strong>Meta Business Suite</strong> é onde você opera a vitrine no dia a dia: post, caixa de entrada, anúncio. O <strong>Portfolio</strong> é o dono de tudo — pagamento, equipe e a senha permanente da API. O <strong>Meta for Developers</strong> é onde você cria o programa que liga o seu sistema ao WhatsApp.</p>
+          <p>A Página do Facebook sozinha não vira API. No fim do cadastro você copia três códigos; o passo a passo está em “Cadastro — 15 etapas”.</p>
+          <p><a href="#s7">Ir para etapa 1 →</a> · <a href="#s-price-0">Preços</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s4" data-title="Business Suite">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Opcional</p>
+          <h2>Business Suite = só a vitrine</h2>
+          <p class="subtitle">Opcional — se já entendeu o mapa</p>
+          <p>Post, inbox, anúncio. É o volante. Não configura API.</p>
+          <div class="chip-row">
+            <span class="chip">Suite = operar</span>
+            <span class="chip accent">Portfolio = dono</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s5" data-title="Central de Contas">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Opcional</p>
+          <h2>Central de Contas = você, pessoa</h2>
+          <p class="subtitle">Opcional</p>
+          <p>Login e senha pessoal. Não é aqui que se cria WhatsApp API.</p>
+          <p>Portfolio = empresa · Developers = programa técnico.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s6" data-title="Por quê">
+      <div class="slide-inner">
+        <article class="panel">
+          <p class="slide-label">Opcional</p>
+          <h2>Por que vários sites da Meta?</h2>
+          <p class="subtitle">Opcional — App e senha permanente</p>
+          <p><strong>Developers</strong> = programa que liga seu sistema ao WhatsApp. <strong>Portfolio</strong> = dono e senha que não expira em horas.</p>
+          <div class="callout">Senha de teste no Developers expira. Produção: Portfolio → Usuários do sistema.</div>
+          <p><a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">developers.facebook.com/apps</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s7" data-title="Etapa 1">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 1 de 15</p>
+          <h2>Começar o cadastro técnico</h2>
+          <p class="subtitle">Você já leu vitrine vs escritório?</p>
+          <p>Se sim, siga etapa por etapa. Se não, volte em <a href="#s1">Vitrine vs escritório</a> e <a href="#s2">O Portfolio</a>.</p>
+          <p>Próximo: Página do Facebook, Instagram, Portfolio, Developers, App, número, senha.</p>
+          <p><a href="guia-whatsapp-cloud-api-credenciais.md">Checklist (.md)</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s8" data-title="Etapa 2">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 2 de 15</p>
+          <h2>Página do Facebook</h2>
+          <p class="subtitle">Identidade pública — não é a API</p>
+          <p>A Página entra no Portfolio como ativo. Sem ela (ou sem vincular), o ecossistema comercial fica incompleto.</p>
+          <p><a href="https://www.facebook.com/pages/create" target="_blank" rel="noopener noreferrer">Criar Página</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s9" data-title="Etapa 3">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 3 de 15</p>
+          <h2>Instagram empresarial</h2>
+          <p class="subtitle">Conta business/creator ligada à Página</p>
+          <p>Fecha a fórmula: Face + Insta business = Suite. O Instagram não configura a API do WhatsApp; completa o Business Suite.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s10" data-title="Etapa 4">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 4 de 15</p>
+          <h2>Meta Business Suite</h2>
+          <p class="subtitle">business.facebook.com</p>
+          <p>Gestão de presença social. <strong>Não</strong> cria App, <strong>não</strong> gera Bearer permanente, <strong>não</strong> substitui API Setup.</p>
+          <p><a href="https://business.facebook.com/" target="_blank" rel="noopener noreferrer">Abrir Business Suite</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s11" data-title="Etapa 5">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 5 de 15</p>
+          <h2>Portfolio empresarial (= BM)</h2>
+          <p class="subtitle">Dono de todos os ativos</p>
+          <p>Confirme ou crie o Portfolio. Sem ele: sem WABA de produção, sem pagamento de conversas, sem System User.</p>
+          <p><a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">Configurações do Portfolio</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s12" data-title="Etapa 6">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 6 de 15</p>
+          <h2>Vincular Página e Instagram</h2>
+          <p class="subtitle">Settings → Contas</p>
+          <p>Em <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">Settings</a> → Contas → Páginas e Instagram, confirme que os ativos estão no Portfolio correto.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s13" data-title="Etapa 7">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 7 de 15</p>
+          <h2>Conta Meta for Developers</h2>
+          <p class="subtitle">Registro de desenvolvedor</p>
+          <p>Escolha perfil <strong>Desenvolvedor</strong> se você vai configurar API e integrações.</p>
+          <p><a href="https://developers.facebook.com/async/registration/" target="_blank" rel="noopener noreferrer">Registrar</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s14" data-title="Etapa 8">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 8 de 15</p>
+          <h2>Criar o App WhatsApp</h2>
+          <p class="subtitle">developers.facebook.com/apps</p>
+          <ol>
+            <li><a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">Criar app</a></li>
+            <li>Nome do app</li>
+            <li>Caso de uso: <strong>Conectar com clientes pelo WhatsApp</strong></li>
+            <li>Selecionar seu Portfolio empresarial</li>
+          </ol>
+          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started" target="_blank" rel="noopener noreferrer">Get Started</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s15" data-title="Etapa 9">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 9 de 15</p>
+          <h2>Função do App</h2>
+          <p class="subtitle">Licença técnica</p>
+          <p>Sem App: sem webhook oficial, sem Phone Number ID no painel, sem revisão de permissões. Guarde o <strong>App ID</strong>.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s16" data-title="Etapa 10">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 10 de 15</p>
+          <h2>API Setup — WABA</h2>
+          <p class="subtitle">WhatsApp Business Account ID</p>
+          <p>App → <strong>WhatsApp → API Setup</strong>. Crie ou conecte a WABA. Copie o <strong>WhatsApp Business Account ID</strong> (não confundir com Portfolio ID).</p>
+          <p><code>developers.facebook.com/apps/SEU_APP_ID/whatsapp-business/wa-dev-console/</code></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s17" data-title="Etapa 11">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 11 de 15</p>
+          <h2>Phone Number ID</h2>
+          <p class="subtitle">ID do número na API</p>
+          <p>Adicione número de teste ou real (SMS). O painel exibe o <strong>Phone number ID</strong> para chamadas <code>graph.facebook.com/.../messages</code>.</p>
+          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/registration/" target="_blank" rel="noopener noreferrer">Registrar número</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s18" data-title="Etapa 12">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 12 de 15</p>
+          <h2>Token temporário vs permanente</h2>
+          <p class="subtitle">Não use token de teste em produção</p>
+          <p>Token do API Setup expira rápido. Produção: <strong>System User</strong> no Portfolio.</p>
+          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens" target="_blank" rel="noopener noreferrer">Access tokens</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s19" data-title="Etapa 13">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 13 de 15</p>
+          <h2>System User + Bearer permanente</h2>
+          <p class="subtitle">business.facebook.com/settings</p>
+          <ol>
+            <li>Usuários do sistema → criar Admin</li>
+            <li>Atribuir App + WABA (controle total)</li>
+            <li>Gerar token: <code>business_management</code>, <code>whatsapp_business_management</code>, <code>whatsapp_business_messaging</code></li>
+            <li>Guardar em .env seguro</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s20" data-title="Etapa 14">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 14 de 15</p>
+          <h2>Gerenciador do WhatsApp</h2>
+          <p class="subtitle">Templates e visão do número</p>
+          <p><a href="https://business.facebook.com/latest/whatsapp_manager/" target="_blank" rel="noopener noreferrer">WhatsApp Manager</a> — templates e limites. Phone Number ID para código continua no API Setup.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s21" data-title="Etapa 15">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label step">Etapa 15 de 15</p>
+          <h2>Depois dos credenciais</h2>
+          <p class="subtitle">Base pronta — migração continua</p>
+          <p>Com WABA ID + Phone Number ID + Bearer você fechou a base. Ainda: webhook HTTPS, templates aprovados, App Review, pagamento. Ao migrar número do celular ou API não oficial, <strong>desligue o antigo antes</strong>.</p>
+          <p><a href="guia-whatsapp-cloud-api-credenciais.md">guia-whatsapp-cloud-api-credenciais.md</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- —— PREÇOS E TEMPLATES (seção separada) —— -->
+
+    <section class="slide" id="s-price-0" data-title="Preços">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="price-section-title">Seção separada · custos</p>
+          <p class="slide-label price">Preços e templates</p>
+          <h1>Quanto custa usar a API oficial?</h1>
+          <p class="subtitle">Cobrança por mensagem entregue — não por “ter a API ligada”</p>
+          <p>A Meta cobra quando uma mensagem é <strong>entregue</strong> ao usuário (não apenas quando você clica em enviar). O valor depende do <strong>país do destinatário</strong> e da <strong>categoria</strong> da mensagem.</p>
+          <p>Regra de ouro para não surpreender na fatura:</p>
+          <ul>
+            <li><strong>Fora da janela de 24h</strong> → você precisa de <strong>template</strong> (modelo) aprovado → <strong>há cobrança</strong> (exceto casos gratuitos abaixo).</li>
+            <li><strong>Dentro da janela de 24h</strong> (cliente falou com você) → você <strong>responde com texto livre</strong> → em geral <strong>não paga</strong> como disparo de template de marketing.</li>
+          </ul>
+          <p>Fonte oficial: <a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Preços da Plataforma WhatsApp Business</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s-price-1" data-title="Template">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label price">Preços · templates</p>
+          <h2>Por que a Meta exige template (modelo)?</h2>
+          <p class="subtitle">Não é burocracia — é classificação + cobrança</p>
+          <p>Quando você quer <strong>iniciar conversa</strong> ou falar depois que a janela de 24h fechou, não pode mandar qualquer texto solto. A Meta obriga usar um <strong>template</strong> (modelo de mensagem) porque precisa:</p>
+          <div class="why-template">
+            <ol>
+              <li><strong>Pré-aprovar</strong> o conteúdo antes de ir para milhares de pessoas (anti-spam).</li>
+              <li><strong>Classificar</strong> a mensagem em uma das quatro categorias oficiais.</li>
+              <li><strong>Cobrar</strong> de acordo com essa categoria e o mercado (país) do cliente.</li>
+            </ol>
+          </div>
+          <p>Você cria o template no Gerenciador do WhatsApp, envia para análise, e só depois de <strong>aprovado</strong> usa o nome do template na API. Cada envio de template entregue pode gerar tarifa — conforme a categoria aprovada.</p>
+          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview" target="_blank" rel="noopener noreferrer">Documentação de templates</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s-price-2" data-title="Janela 24h">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label price">Preços · intuitivo</p>
+          <h2>Quando você paga vs quando não paga</h2>
+          <p class="subtitle">Pense em “quem abriu a conversa” e “janela aberta ou fechada”</p>
+
+          <div class="flow-grid">
+            <div class="flow-card free">
+              <h3><span class="flow-badge">Grátis</span> Cliente falou · janela de 24h aberta</h3>
+              <p>O cliente te mandou mensagem (ou entrou por ponto gratuito). A <strong>janela de 24h</strong> está aberta. Você <strong>responde</strong> com mensagem normal (texto, áudio, etc.) — <strong>sem template de abertura</strong>.</p>
+              <p><strong>Não é um “disparo de template”</strong> cobrado como marketing. Mensagens de <strong>serviço</strong> não são cobradas; utilidade enviada <em>em resposta</em> ao cliente também não entra na mesma lógica de cobrança de template outbound.</p>
+            </div>
+
+            <p class="flow-arrow">↓</p>
+
+            <div class="flow-card paid">
+              <h3><span class="flow-badge">Pago</span> Você quer falar primeiro · ou janela fechou</h3>
+              <p>Passou 24h sem o cliente falar, ou você quer <strong>iniciar</strong> a conversa (campanha, aviso, cobrança). Aí você <strong>obrigatoriamente</strong> envia um <strong>template aprovado</strong>.</p>
+              <p><strong>Cada template entregue</strong> pode ser cobrado. Exemplo Brasil, categoria Marketing, em USD: <span class="price-highlight">US$ 0,0625</span> <span class="price-note">por mensagem entregue (consulte tabela atual na Meta)</span>.</p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Resumo em uma frase:</strong> cobra na hora de enviar o <em>primeiro</em> template (abrir ou reabrir fora da janela). <strong>Não cobra</strong> como esse disparo quando você só <em>responde</em> o cliente com a janela de 24h aberta.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s-price-3" data-title="Categorias">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label price">Preços · categorias</p>
+          <h2>As 4 categorias de mensagem</h2>
+          <p class="subtitle">A Meta classifica cada template em uma delas — o preço muda</p>
+          <p>Na calculadora oficial você escolhe mercado (ex.: Brazil), moeda (ex.: USD) e categoria. A tarifa é por <strong>mensagem entregue</strong> naquela categoria.</p>
+
+          <div class="cat-grid">
+            <div class="cat-pill">Marketing<span>Promoções, ofertas, reengajamento</span></div>
+            <div class="cat-pill">Utilidade<span>Atualização de pedido, agendamento, alerta</span></div>
+            <div class="cat-pill">Autenticação<span>Códigos OTP, verificação de login</span></div>
+            <div class="cat-pill">Serviço<span>Resposta ao cliente na janela — sem cobrança</span></div>
+          </div>
+
+          <p><strong>Exemplo real (calculadora Meta, Brasil, USD):</strong> template <strong>Marketing</strong> = <strong>US$ 0,0625</strong> por mensagem entregue. Outras categorias e países têm valores diferentes — sempre confira a tabela atualizada.</p>
+          <p><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Abrir calculadora de taxas</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s-price-4" data-title="Gratuito">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label price">Preços · gratuito</p>
+          <h2>O que a Meta não cobra (ou cobra menos)</h2>
+          <p class="subtitle">Trechos úteis da página oficial de preços</p>
+          <ul>
+            <li><strong>Mensagens de serviço</strong> — não cobradas (atendimento dentro da conversa).</li>
+            <li><strong>Utilidade em resposta</strong> — mensagens de utilidade que a empresa envia <em>em resposta</em> ao usuário não são cobradas da mesma forma que disparos ativos.</li>
+            <li><strong>Ponto de entrada gratuito (72h)</strong> — cliente veio por anúncio “clique para WhatsApp” ou botão na Página do Facebook: mensagens podem ser gratuitas por <strong>72 horas</strong> (todas as categorias nesse período, conforme regras Meta).</li>
+            <li><strong>Volume</strong> — mais envios de utilidade/autenticação podem trazer faixas de preço melhores (níveis de volume).</li>
+          </ul>
+          <p>A cobrança usa o país do <strong>usuário que recebe</strong> e a categoria atribuída ao template no momento da aprovação. Template reclassificado ou rejeitado muda o jogo — acompanhe o Gerenciador do WhatsApp.</p>
+          <p><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Preços simples e transparentes — WhatsApp Business</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s22" data-title="Resumo">
+      <div class="slide-inner">
+        <article class="panel tip-zone">
+          <p class="slide-label">Resumo</p>
+          <h2>IDs para não trocar</h2>
+          <div class="table-scroll">
+            <table class="id-table">
+              <thead>
+                <tr><th>Nome</th><th>O que é</th><th>Onde</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Portfolio ID</strong></td><td>Empresa (BM)</td><td>Settings</td></tr>
+                <tr><td><strong>WABA ID</strong></td><td>Conta WhatsApp Business</td><td>API Setup</td></tr>
+                <tr><td><strong>Phone Number ID</strong></td><td>Número na API</td><td>API Setup</td></tr>
+                <tr><td><strong>App ID</strong></td><td>App Developers</td><td>developers.facebook.com/apps</td></tr>
+                <tr><td><strong>Bearer token</strong></td><td>Token permanente</td><td>System User</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="slide">
+      <p>API Oficial WhatsApp · <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/overview" target="_blank" rel="noopener noreferrer">Documentação Meta</a></p>
+    </footer>
+  </div>
+
+  <div id="glossary-tooltip" role="tooltip" hidden></div>
+
+  <script>
+    (function () {
+      /* —— Glossário: tooltips automáticos —— */
+      var GLOSSARY = [
+        ["WhatsApp Cloud API", "API oficial da Meta para enviar e receber mensagens WhatsApp via código. Também chamada API de Nuvem."],
+        ["API oficial", "Integração autorizada pela Meta (não usa WhatsApp Web improvisado nem bibliotecas não oficiais)."],
+        ["API não oficial", "Soluções como Evolution, Baileys ou similares — não são suportadas pela Meta e podem quebrar ou banir número."],
+        ["Phone Number ID", "Identificador do seu número dentro da API (não é o +55). Aparece no API Setup do App."],
+        ["WhatsApp Business Account ID", "ID da conta WhatsApp Business (WABA). Muitos chamam de \"business id\" — não confundir com Portfolio."],
+        ["WABA ID", "Mesmo que WhatsApp Business Account ID — ID da conta WhatsApp Business na Meta."],
+        ["Bearer token permanente", "Token de acesso longo, gerado pelo System User no Portfolio. Usado em Authorization: Bearer nas requisições."],
+        ["Bearer permanente", "Token que não expira em poucas horas — criado em Usuários do sistema (Portfolio)."],
+        ["Bearer token", "Chave de acesso colocada no cabeçalho HTTP para a API aceitar suas requisições."],
+        ["Bearer", "Formato do token: você envia \"Authorization: Bearer SEU_TOKEN\" em cada chamada à API."],
+        ["Meta Business Portfolio", "Sinônimo de Portfolio empresarial e Business Manager (BM)."],
+        ["Portfolio empresarial", "Conta-empresa na Meta: dona de Páginas, Instagram, WABA, pagamentos e System Users."],
+        ["Meta Business Suite", "Painel para operar Página e Instagram (posts, inbox, anúncios). Não configura a API do WhatsApp."],
+        ["Meta for Developers", "Portal onde você cria o App e acessa API Setup, documentação e webhooks."],
+        ["Business Manager", "Nome antigo do Portfolio empresarial (BM). Mesma coisa."],
+        ["Account Center", "Central de Contas da pessoa física (login, senha). Não é onde se cria WABA nem App."],
+        ["Central de Contas", "Mesmo que Account Center — configurações da sua conta pessoal Meta."],
+        ["WhatsApp Manager", "Painel para templates de mensagem, limites e gestão do número WhatsApp Business."],
+        ["Gerenciador do WhatsApp", "Interface em business.facebook.com para modelos (templates) e configuração do número."],
+        ["API Setup", "Tela no App (Developers → WhatsApp) onde você conecta WABA, vê Phone Number ID e token de teste."],
+        ["App Review", "Processo em que a Meta aprova permissões do App para uso em produção com clientes reais."],
+        ["System User", "Usuário técnico do Portfolio usado para gerar token permanente (não é sua conta pessoal)."],
+        ["Usuários do sistema", "Onde você cria o System User e gera o token permanente — em business.facebook.com/settings."],
+        ["Portfolio ID", "Identificador do seu Portfolio (BM). Diferente do WABA ID e do Phone Number ID."],
+        ["App ID", "Identificador do App criado no Meta for Developers."],
+        ["Graph API", "API da Meta usada pelo WhatsApp Cloud API (URLs graph.facebook.com)."],
+        ["webhook", "URL do seu servidor que recebe avisos quando chega mensagem ou muda status (entregue, lida)."],
+        ["templates", "Modelos de mensagem pré-aprovados pela Meta. Obrigatórios para falar com cliente fora da janela de 24h."],
+        ["token permanente", "Token de longa duração do System User — use em produção, não o token rápido do API Setup."],
+        ["token temporário", "Token gerado no API Setup para teste — expira em poucas horas."],
+        ["token de teste", "Mesmo que token temporário do painel API Setup."],
+        ["Instagram business", "Conta Instagram profissional (business ou creator) ligada à Página do Facebook."],
+        ["conta empresarial", "No Instagram: perfil business/creator, não pessoal — exigido para o Business Suite completo."],
+        ["Página do Facebook", "Perfil comercial no Facebook vinculado ao Portfolio."],
+        ["WhatsApp Business Account", "Conta WhatsApp Business (WABA) — container do número na API oficial."],
+        ["WABA", "WhatsApp Business Account — a \"conta\" WhatsApp Business dentro da Meta."],
+        ["Developers", "Área developers.facebook.com — Apps, API e documentação técnica."],
+        ["Portfolio", "Portfolio empresarial / BM — dono dos ativos e do token permanente."],
+        ["Página do Face", "Página do Facebook da empresa — vitrine pública, não é a API."],
+        ["ativo", "Recurso vinculado ao Portfolio: Página, Instagram, WABA, etc."],
+        ["ativos", "Páginas, contas Instagram, WABAs e outros recursos ligados ao Portfolio."],
+        ["HTTPS", "Conexão segura obrigatória para URL de webhook em produção."],
+        ["produção", "Ambiente real com clientes — exige token permanente, App Review e pagamento à Meta."],
+        ["janela de 24h", "Período após o cliente mandar mensagem em que você pode responder com texto livre (sem template)."],
+        ["migração", "Processo de levar um número do WhatsApp comum ou API não oficial para a API oficial da Meta."],
+        ["número de teste", "Número fornecido pela Meta no API Setup para aprender sem usar seu chip real."],
+        ["permissões", "Autorizações do App (ex.: whatsapp_business_messaging) para enviar mensagens e gerenciar conta."],
+        ["template", "Modelo de mensagem pré-aprovado pela Meta. Obrigatório para iniciar conversa ou falar fora da janela de 24h."],
+        ["modelo", "Mesmo que template — mensagem com texto fixo aprovado antes do envio em massa."],
+        ["mensagem entregue", "A Meta cobra quando a mensagem chega ao celular do usuário, não só quando você clica em enviar."],
+        ["categoria de mensagem", "Marketing, Utilidade, Autenticação ou Serviço — define o preço e as regras."],
+        ["mensagem de marketing", "Promoção, oferta, reengajamento. Ex.: US$ 0,0625 por entrega no Brasil (USD, confira tabela)."],
+        ["mensagem de utilidade", "Pedido, agendamento, alerta. Cobrada se for disparo ativo; em resposta ao cliente, regras diferentes."],
+        ["mensagem de autenticação", "Código OTP / verificação. Tem tabela própria e descontos por volume."],
+        ["mensagem de serviço", "Resposta de atendimento na janela aberta — a Meta não cobra por elas."],
+        ["disparo de template", "Envio de um modelo aprovado — é quando entra a cobrança (fora da janela ou início de conversa)."],
+        ["ponto de entrada gratuito", "Cliente veio por anúncio Clique para WhatsApp ou botão na Página: até 72h de mensagens gratuitas (regras Meta)."],
+        ["clique para WhatsApp", "Anúncio que abre conversa no WhatsApp — pode ativar janela gratuita de 72 horas."]
+      ];
+
+      function escapeRegex(s) {
+        return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function shouldSkipNode(node) {
+        var p = node.parentElement;
+        while (p) {
+          if (p.matches("a, code, script, style, .tip, .sidebar-nav, .tip-hint, h1, h2, h3")) return true;
+          p = p.parentElement;
+        }
+        return false;
+      }
+
+      function escapeAttr(s) {
+        return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+      }
+
+      function termRegex(term) {
+        var esc = escapeRegex(term);
+        return new RegExp("(?<![A-Za-z0-9À-ÿ])" + esc + "(?![A-Za-z0-9À-ÿ])", "gi");
+      }
+
+      var glossarySorted = GLOSSARY.slice().sort(function (a, b) {
+        return b[0].length - a[0].length;
+      });
+
+      function wrapTermsInText(text) {
+        var result = text;
+        var placeholders = [];
+        glossarySorted.forEach(function (entry) {
+          var re = termRegex(entry[0]);
+          result = result.replace(re, function (match) {
+            var id = placeholders.length;
+            placeholders.push({ term: entry[0], tip: entry[1], match: match });
+            return "\x00" + id + "\x00";
+          });
+        });
+        placeholders.forEach(function (p, id) {
+          var html = '<span class="tip" tabindex="0" data-term="' + escapeAttr(p.term) + '" data-tip="' + escapeAttr(p.tip) + '">' + p.match + "</span>";
+          result = result.split("\x00" + id + "\x00").join(html);
+        });
+        return result;
+      }
+
+      function applyGlossary(root) {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode: function (node) {
+            if (!node.textContent.trim()) return NodeFilter.FILTER_REJECT;
+            if (shouldSkipNode(node)) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+
+        nodes.forEach(function (node) {
+          var html = wrapTermsInText(node.textContent);
+          if (html === node.textContent) return;
+          var span = document.createElement("span");
+          span.innerHTML = html;
+          node.parentNode.replaceChild(span, node);
+        });
+      }
+
+      document.querySelectorAll(".tip-zone").forEach(applyGlossary);
+
+      var tooltipEl = document.getElementById("glossary-tooltip");
+      var activeTip = null;
+
+      function showTooltip(el, x, y) {
+        var term = el.getAttribute("data-term") || el.textContent.trim();
+        var tip = el.getAttribute("data-tip");
+        if (!tip) return;
+        tooltipEl.innerHTML = "<strong>" + term + "</strong>" + tip;
+        tooltipEl.hidden = false;
+        tooltipEl.classList.add("visible");
+        activeTip = el;
+        var rect = tooltipEl.getBoundingClientRect();
+        var left = x + 12;
+        var top = y + 16;
+        if (left + rect.width > window.innerWidth - 12) left = window.innerWidth - rect.width - 12;
+        if (top + rect.height > window.innerHeight - 12) top = y - rect.height - 12;
+        if (left < 12) left = 12;
+        if (top < 12) top = 12;
+        tooltipEl.style.left = left + "px";
+        tooltipEl.style.top = top + "px";
+      }
+
+      function hideTooltip() {
+        tooltipEl.classList.remove("visible");
+        tooltipEl.hidden = true;
+        activeTip = null;
+      }
+
+      document.body.addEventListener("mouseover", function (e) {
+        var tip = e.target.closest(".tip");
+        if (tip) showTooltip(tip, e.clientX, e.clientY);
+      });
+
+      document.body.addEventListener("mouseout", function (e) {
+        var tip = e.target.closest(".tip");
+        if (tip && !tip.contains(e.relatedTarget)) hideTooltip();
+      });
+
+      document.body.addEventListener("focusin", function (e) {
+        if (e.target.classList && e.target.classList.contains("tip")) {
+          var r = e.target.getBoundingClientRect();
+          showTooltip(e.target, r.left + r.width / 2, r.bottom);
+        }
+      });
+
+      document.body.addEventListener("focusout", function (e) {
+        if (e.target.classList && e.target.classList.contains("tip")) hideTooltip();
+      });
+
+      document.body.addEventListener("click", function (e) {
+        var tip = e.target.closest(".tip");
+        if (!tip || window.matchMedia("(hover: hover)").matches) return;
+        e.preventDefault();
+        if (activeTip === tip) {
+          hideTooltip();
+          return;
+        }
+        var r = tip.getBoundingClientRect();
+        showTooltip(tip, r.left + r.width / 2, r.bottom);
+      });
+
+      document.addEventListener("scroll", hideTooltip, { passive: true });
+
+      /* —— Modal obrigatório —— */
+      var introModal = document.getElementById("intro-modal");
+      var introBtn = document.getElementById("intro-modal-btn");
+      var toggle = document.getElementById("sidebar-toggle");
+
+      document.body.classList.add("modal-open");
+
+      function revealVisiblePanels() {
+        document.querySelectorAll(".panel").forEach(function (panel) {
+          var r = panel.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.85 && r.bottom > 0) {
+            panel.classList.add("is-visible");
+          }
+        });
+      }
+
+      function closeIntroModal() {
+        introModal.classList.add("is-hidden");
+        document.body.classList.remove("modal-open");
+        revealVisiblePanels();
+        toggle.focus();
+      }
+
+      introBtn.addEventListener("click", closeIntroModal);
+
+      var isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+      /* —— Painéis: no mobile tudo visível de imediato —— */
+      if (isMobile) {
+        document.querySelectorAll(".panel").forEach(function (panel) {
+          panel.classList.add("is-visible");
+        });
+      } else {
+        var panelObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) entry.target.classList.add("is-visible");
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+        );
+        document.querySelectorAll(".panel").forEach(function (panel) {
+          panelObserver.observe(panel);
+        });
+      }
+
+      /* —— Sidebar (fechada por padrão) —— */
+      var sidebar = document.getElementById("sidebar");
+      var backdrop = document.getElementById("sidebar-backdrop");
+      var sidebarClose = document.getElementById("sidebar-close");
+      var progress = document.getElementById("progress");
+      var slides = document.querySelectorAll(".slide[id]");
+      var navLinks = document.querySelectorAll(".sidebar-nav a[href^='#']");
+
+      function openSidebar() {
+        sidebar.classList.add("open");
+        backdrop.classList.add("visible");
+        backdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove("open");
+        backdrop.classList.remove("visible");
+        backdrop.setAttribute("aria-hidden", "true");
+      }
+
+      toggle.addEventListener("click", function () {
+        if (sidebar.classList.contains("open")) closeSidebar();
+        else openSidebar();
+      });
+
+      sidebarClose.addEventListener("click", closeSidebar);
+      backdrop.addEventListener("click", closeSidebar);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (!introModal.classList.contains("is-hidden")) return;
+        if (sidebar.classList.contains("open")) closeSidebar();
+      });
+
+      navLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          closeSidebar();
+        });
+      });
+
+      function onScroll() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+
+        var activeId = slides[0] && slides[0].id;
+        slides.forEach(function (s) {
+          var rect = s.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4) activeId = s.id;
+        });
+
+        navLinks.forEach(function (link) {
+          var href = link.getAttribute("href");
+          link.classList.toggle("active", href === "#" + activeId);
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
