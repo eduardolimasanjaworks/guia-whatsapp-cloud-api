@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>API Oficial WhatsApp — Guia de cadastro</title>
+  <title>API Oficial WhatsApp: Guia de cadastro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -53,7 +53,7 @@
 
     body.modal-open { overflow: hidden; }
 
-  /* —— Sidebar (fechada por padrão) —— */
+  /* Sidebar (fechada por padrão) */
     .sidebar-backdrop {
       position: fixed;
       inset: 0;
@@ -224,7 +224,7 @@
     .sidebar-toggle:hover { transform: scale(1.04); }
     .sidebar-toggle:active { transform: scale(0.97); }
 
-    /* Barra superior (mobile) — reserva espaço, nada fica por baixo */
+    /* Barra superior (mobile): reserva espaço, nada fica por baixo */
     .app-topbar {
       display: none;
     }
@@ -238,7 +238,7 @@
       text-overflow: ellipsis;
     }
 
-  /* —— Modal introdutório —— */
+  /* Modal introdutório */
     .intro-modal {
       position: fixed;
       inset: 0;
@@ -402,7 +402,159 @@
 
     .intro-modal-btn:active { transform: translateY(0); }
 
-    /* —— Main —— */
+    .intro-modal-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 1rem 1.75rem 0;
+      flex-shrink: 0;
+    }
+
+    .intro-modal-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--surface-soft);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .intro-modal-dot.is-active {
+      background: var(--accent);
+      transform: scale(1.15);
+    }
+
+    .intro-modal-pane {
+      display: none;
+    }
+
+    .intro-modal-pane.is-active {
+      display: block;
+      animation: modalPaneIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes modalPaneIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro-modal-pane p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+    }
+
+    .intro-modal-pane p:last-child { margin-bottom: 0; }
+
+    .intro-modal-pane p strong,
+    .panel p strong,
+    .executive-summary p strong {
+      color: #0a5c47;
+      font-weight: 700;
+    }
+
+    .intro-modal-highlight {
+      margin: 1rem 0 0;
+      padding: 1rem 1.1rem;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .intro-modal-highlight strong { color: #0a6b52; }
+
+    .intro-modal-example {
+      margin: 1rem 0 0;
+      padding: 1rem 1.1rem;
+      background: var(--bg-alt);
+      border-radius: 12px;
+      border: 1px solid var(--surface-soft);
+    }
+
+    .intro-modal-example p {
+      margin-bottom: 0.65rem;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .intro-modal-example p:last-child { margin-bottom: 0; }
+
+    .intro-modal-example .ex-time {
+      font-weight: 700;
+      color: var(--heading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .intro-modal-example .ex-free {
+      color: #0a6b52;
+      font-weight: 600;
+    }
+
+    .intro-modal-step-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .intro-modal-actions {
+      display: flex;
+      gap: 0.65rem;
+      flex-direction: column;
+    }
+
+    .intro-modal-btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1.25rem;
+      border: 2px solid var(--surface-soft);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--heading);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .intro-modal-btn-secondary:hover {
+      border-color: var(--accent);
+      background: var(--bg-alt);
+    }
+
+    .intro-modal-btn-secondary[hidden],
+    .intro-modal-btn[hidden] { display: none; }
+
+    .executive-summary {
+      padding: 1.25rem 1.35rem;
+      margin-bottom: 1.25rem;
+      background: var(--accent-soft);
+      border-radius: 14px;
+      border: 1px solid rgba(13, 143, 111, 0.15);
+    }
+
+    .executive-summary h2 {
+      font-size: 1.15rem;
+      color: #0a6b52;
+      margin-bottom: 0.65rem;
+    }
+
+    .executive-summary p {
+      font-size: 1rem;
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+
+    .executive-summary p:last-child { margin-bottom: 0; }
+
+    /* Main */
     .main {
       margin-left: 0;
       min-height: 100vh;
@@ -763,7 +915,7 @@
       text-align: center;
     }
 
-    /* —— Tooltips (palavras difíceis) —— */
+    /* Tooltips (palavras difíceis) */
     .tip-hint {
       font-size: 0.78rem;
       color: var(--muted);
@@ -837,7 +989,7 @@
       margin-bottom: 0.35rem;
     }
 
-    /* —— Mobile: tudo visível, sem cortar —— */
+    /* Mobile: tudo visível, sem cortar */
     @media (max-width: 768px) {
       html { scroll-snap-type: none; }
 
@@ -982,7 +1134,7 @@
       .intro-modal-steps li { padding-left: 2.1rem; }
     }
 
-    /* —— Desktop: botão flutuante, sem barra —— */
+    /* Desktop: botão flutuante, sem barra */
     @media (min-width: 769px) {
       .app-topbar {
         display: block;
@@ -1007,7 +1159,7 @@
       }
     }
 
-    /* —— Desktop: mais respiro —— */
+    /* Desktop: mais respiro */
     @media (min-width: 1024px) {
       .slide { padding: 4rem 2.5rem 5rem; }
       .panel { padding: 2.75rem 3rem; }
@@ -1027,38 +1179,61 @@
 
   <div class="intro-modal" id="intro-modal" role="dialog" aria-modal="true" aria-labelledby="intro-modal-title">
     <div class="intro-modal-card">
+      <div class="intro-modal-dots" id="intro-modal-dots" aria-hidden="true">
+        <span class="intro-modal-dot is-active" data-dot="1"></span>
+        <span class="intro-modal-dot" data-dot="2"></span>
+        <span class="intro-modal-dot" data-dot="3"></span>
+        <span class="intro-modal-dot" data-dot="4"></span>
+        <span class="intro-modal-dot" data-dot="5"></span>
+      </div>
       <div class="intro-modal-scroll">
-        <h2 id="intro-modal-title">São 5 etapas</h2>
-        <p class="intro-modal-why">
-        <strong>Para quê?</strong> Para enviar mensagens para muitos clientes pelo WhatsApp oficial da Meta — com o número da sua empresa, sem ser bloqueado por spam. Não é cadastro de rede social: é liberar a API para disparo em massa.
-      </p>
-      <p class="intro-modal-lead">As 5 etapas que a Meta exige</p>
-      <ol class="intro-modal-steps">
-        <li>
-          <strong>Autenticar a empresa</strong>
-          Provar no Meta que o negócio é real (Portfolio / verificação).
-        </li>
-        <li>
-          <strong>Criar o acesso técnico</strong>
-          Registrar o App no Meta for Developers e ligar ao WhatsApp.
-        </li>
-        <li>
-          <strong>Conectar o número</strong>
-          Vincular o chip da empresa à API oficial (não é só ter WhatsApp no celular).
-        </li>
-        <li>
-          <strong>Aprovar as mensagens</strong>
-          Cada texto de disparo em massa precisa ser aprovado antes (template).
-        </li>
-        <li>
-          <strong>Vincular pagamento</strong>
-          Cadastrar cartão — a Meta cobra por mensagem entregue fora da janela de atendimento.
-        </li>
-      </ol>
+        <p class="intro-modal-step-label" id="intro-modal-step-label">Passo 1 de 5</p>
+
+        <div class="intro-modal-pane is-active" data-step="1" id="intro-pane-1">
+          <h2 id="intro-modal-title">Antes de começar</h2>
+          <p class="intro-modal-lead" style="text-transform: none; letter-spacing: 0; font-size: 1.12rem; color: var(--text); margin-bottom: 0; line-height: 1.6;">Este guia mostra como colocar o WhatsApp oficial da Meta na sua empresa.</p>
+        </div>
+
+        <div class="intro-modal-pane" data-step="2" id="intro-pane-2" hidden>
+          <h2 id="intro-modal-title-2">Como funcionam os custos (na prática)</h2>
+          <p><strong>A Meta cobra quando a sua empresa inicia a conversa.</strong> A regra é simples: quem tomou a iniciativa de mandar a mensagem?</p>
+          <p>Se a <strong>sua empresa toma a iniciativa</strong>, <strong>haverá cobrança</strong>. Isso vale no <strong>primeiro contato</strong> com o cliente e quando você <strong>volta a falar</strong> depois que o <strong>período gratuito de atendimento acabou</strong>.</p>
+          <p>Se o <strong>cliente procura a sua empresa</strong>, <strong>você nunca paga para responder</strong>. A partir do momento em que ele manda mensagem, a Meta abre um período de <strong>24 horas</strong> para você atendê-lo. Durante esse tempo, a conversa é <strong>totalmente livre</strong>: você pode mandar quantas mensagens quiser, digitando o que preferir, <strong>sem custo algum</strong>.</p>
+          <p>Se o cliente parar de responder e esse período de <strong>24 horas</strong> se esgotar, aquela conversa gratuita se encerra. Se você quiser voltar a falar com ele depois disso, a Meta entende como um <strong>novo contato iniciado pela empresa</strong>, e <strong>haverá cobrança de novo</strong>. No passo seguinte ao exemplo, explicamos <strong>qual texto você pode usar</strong> nesses casos.</p>
+        </div>
+
+        <div class="intro-modal-pane" data-step="3" id="intro-pane-3" hidden>
+          <h2 id="intro-modal-title-3">Exemplo na prática</h2>
+          <p>Veja como isso funciona no relógio:</p>
+          <div class="intro-modal-example">
+            <p><span class="ex-time">10:12:</span> <strong>sua empresa manda a primeira mensagem</strong> para o cliente. <strong>A Meta cobra</strong> essa mensagem (alguns centavos, conforme o tipo).</p>
+            <p><span class="ex-time">10:30:</span> o <strong>cliente responde</strong>.</p>
+            <p class="ex-free">De <strong>10:30 até 10:30 do dia seguinte</strong>, você conversa com esse cliente de graça, digitando o que quiser.</p>
+          </div>
+          <p><strong>A cobrança foi só porque a empresa tomou a iniciativa às 10:12.</strong> Depois que o cliente respondeu, o atendimento ficou <strong>gratuito por 24 horas</strong>.</p>
+        </div>
+
+        <div class="intro-modal-pane" data-step="4" id="intro-pane-4" hidden>
+          <h2 id="intro-modal-title-4">Quando você inicia a conversa: como funciona o texto</h2>
+          <p>Quando a empresa toma a iniciativa, você <strong>não digita qualquer coisa na hora</strong>. A Meta exige que o texto seja cadastrado e liberado antes. O fluxo é este:</p>
+          <p><strong>Primeiro</strong>, você escreve a mensagem no <strong>Gerenciador do WhatsApp</strong> (o painel da Meta para o seu número). Pode ser um aviso de promoção, lembrete de pagamento, confirmação de pedido, entre outros formatos que o painel permite.</p>
+          <p><strong>Depois</strong>, você envia esse texto para <strong>análise da Meta</strong>. Eles leem o conteúdo, definem o tipo da mensagem (promoção, utilidade, autenticação, etc.) e <strong>só liberam</strong> se estiver dentro das regras.</p>
+          <p><strong>Enquanto não estiver liberado</strong>, essa mensagem <strong>não pode</strong> ser usada para iniciar conversa. <strong>Depois de liberada</strong>, o seu sistema usa exatamente esse texto quando for a <strong>empresa quem manda a primeira mensagem</strong>, e aí entra a <strong>cobrança</strong> que explicamos no passo anterior.</p>
+        </div>
+
+        <div class="intro-modal-pane" data-step="5" id="intro-pane-5" hidden>
+          <h2 id="intro-modal-title-5">O que a Meta vai exigir da sua empresa (na prática)</h2>
+          <p>Além de entender <strong>custos</strong> e <strong>mensagens para iniciar contato</strong>, o cadastro da API oficial segue uma <strong>ordem administrativa e técnica</strong>.</p>
+          <p><strong>Primeiro</strong>, você prova para a Meta que a <strong>empresa é real</strong> e tem responsabilidade legal. <strong>Depois</strong>, cria um acesso no <strong>Meta for Developers</strong> e conecta o número da empresa à API. Ao fazer isso, o <strong>WhatsApp deixa de funcionar no celular físico</strong>: o número passa a operar <strong>dentro do seu sistema</strong>, porque o aplicativo comum não suporta automação em escala.</p>
+          <p><strong>Por fim</strong>, você cadastra uma <strong>forma de pagamento</strong> no painel da empresa, para cobrir as mensagens em que a <strong>empresa toma a iniciativa</strong>. O guia completo explica cada clique, começando pelo porquê e depois pelos códigos.</p>
+        </div>
       </div>
       <div class="intro-modal-footer">
-        <p class="intro-modal-foot">Quer entender cada passo com calma? Reserve 7 minutos para ler o guia completo.</p>
-        <button type="button" class="intro-modal-btn" id="intro-modal-btn">Começar o guia</button>
+        <p class="intro-modal-foot" id="intro-modal-foot">Resumo para quem decide rápido.</p>
+        <div class="intro-modal-actions">
+          <button type="button" class="intro-modal-btn-secondary" id="intro-modal-back" hidden>Voltar</button>
+          <button type="button" class="intro-modal-btn" id="intro-modal-next">Continuar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1071,16 +1246,17 @@
       <p class="sidebar-brand">WhatsApp Cloud API</p>
       <p class="sidebar-title">WhatsApp oficial, em português claro</p>
       <p class="sidebar-summary">
-        <strong>Ordem do guia:</strong> primeiro o porquê (empresa real, escritório, vitrine).
-        Depois o passo a passo técnico. Siglas e códigos só quando você já entendeu a lógica.
+        Este guia começa explicando <strong>por que</strong> a Meta pede empresa, escritório e vitrine.
+        Só depois entram os cliques e os códigos. Se algo parecer sigla demais, volte um slide: a ideia vem antes do vocabulário técnico.
       </p>
     </div>
 
     <nav class="sidebar-nav" id="sidebar-nav">
       <div class="nav-group">
         <p class="nav-group-label">Comece aqui (sem siglas)</p>
+        <a href="#resumo-executivo">Resumo e custos</a>
         <a href="#s0">Por que tudo isso existe</a>
-        <a href="#s1">Vitrine vs escritório</a>
+        <a href="#s1">Vitrine e escritório</a>
         <a href="#s2">O Portfolio empresarial</a>
         <a href="#s3">Mapa: onde clicar</a>
       </div>
@@ -1093,7 +1269,7 @@
       </div>
 
       <div class="nav-group">
-        <p class="nav-group-label">Cadastro — 15 etapas</p>
+        <p class="nav-group-label">Cadastro (15 etapas)</p>
         <a href="#s7">1 · Começar cadastro</a>
         <a href="#s8">2 · Página do Facebook</a>
         <a href="#s9">3 · Instagram empresarial</a>
@@ -1112,10 +1288,10 @@
       </div>
 
       <div class="nav-group">
-        <p class="nav-group-label">Preços e templates</p>
+        <p class="nav-group-label">Preços e mensagens</p>
         <a href="#s-price-0">Visão geral</a>
-        <a href="#s-price-1">Por que template?</a>
-        <a href="#s-price-2">Quando paga / não paga</a>
+        <a href="#s-price-2">Como funcionam os custos</a>
+        <a href="#s-price-1">Mensagens para iniciar contato</a>
         <a href="#s-price-3">Categorias e valores</a>
         <a href="#s-price-4">O que é gratuito</a>
       </div>
@@ -1142,17 +1318,18 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Comece aqui</p>
+          <div class="executive-summary" id="resumo-executivo">
+            <h2>Resumo e custos</h2>
+            <p>Este guia mostra como colocar o WhatsApp oficial da Meta na sua empresa.</p>
+            <p><strong>A Meta cobra quando a sua empresa inicia a conversa.</strong> Se o <strong>cliente te procurou</strong>, você <strong>atende de graça por 24 horas</strong>, digitando o que quiser. Se a <strong>empresa voltar a falar</strong> depois desse prazo, <strong>haverá cobrança de novo</strong>. Leia nesta ordem: <a href="#s-price-2">custos</a>, depois <a href="#s-price-1">mensagens para iniciar contato</a>.</p>
+          </div>
           <h1>Por que tudo isso existe?</h1>
           <p class="subtitle">Antes de sigla, entenda o motivo</p>
-          <p>A documentação oficial da Meta muitas vezes parece escrita para robôs. Este guia faz o contrário: <strong>primeiro o mundo real</strong>, depois os cliques.</p>
-          <p class="big-idea">Para enviar mensagem para muitos clientes sem o número ser bloqueado por spam, o WhatsApp exige uma coisa básica: <strong>provar que você é uma empresa séria e real</strong>.</p>
-          <p>Não é frescura. Antigamente qualquer perfil falso disparava mensagem e anúncio. A Meta criou regras para separar:</p>
-          <ul>
-            <li><strong>Você pessoa</strong> (perfil pessoal) — como CPF</li>
-            <li><strong>Sua empresa</strong> (negócio com responsabilidade) — como CNPJ</li>
-          </ul>
-          <p>O pilar central é construir o <strong>escritório administrativo</strong> da empresa dentro da Meta. Só depois vêm os códigos técnicos.</p>
-          <p class="slide-next">Próximo: vitrine vs escritório</p>
+          <p>A documentação oficial da Meta muitas vezes parece escrita para quem já é da área de tecnologia. Este guia tenta o caminho oposto: <strong>primeiro a lógica do negócio</strong>, <strong>depois os cliques</strong>.</p>
+          <p class="big-idea">Se você quer mandar mensagem para muitos clientes sem o número cair por spam, o WhatsApp pede algo simples de entender, mas chato de montar: <strong>provar que quem envia é uma empresa de verdade</strong>.</p>
+          <p>Isso não é capricho da Meta. No passado, perfil falso e número clonado disparavam propaganda o dia inteiro. Por isso hoje existe uma separação clara entre <strong>você como pessoa</strong> (seu login, seu perfil, no sentido de CPF) e <strong>sua empresa como negócio</strong> (com responsabilidade sobre página, anúncio e WhatsApp, no sentido de CNPJ).</p>
+          <p>O coração do processo é montar o <strong>escritório administrativo</strong> da empresa dentro da Meta. Os códigos técnicos vêm depois, quando essa base já faz sentido.</p>
+          <p class="slide-next">Na sequência, explicamos a diferença entre vitrine e escritório.</p>
         </article>
       </div>
     </section>
@@ -1161,22 +1338,12 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Comece aqui</p>
-          <h2>Vitrine vs escritório</h2>
-          <p class="subtitle">Não é a mesma coisa — leia com calma</p>
-          <p>O <strong>Portfolio empresarial</strong> (antigo BM) <em>não é</em> só juntar Instagram com Página do Facebook.</p>
-          <div class="analogy-grid">
-            <div class="analogy-card vitrine">
-              <p class="emoji">🪟</p>
-              <h3>Vitrine (o público vê)</h3>
-              <p>Página do Facebook + Instagram. Cliente vê post e foto. Painel do dia a dia: <strong>Meta Business Suite</strong>.</p>
-            </div>
-            <div class="analogy-card escritorio">
-              <p class="emoji">🏢</p>
-              <h3>Escritório (nos fundos)</h3>
-              <p><strong>Portfolio</strong> = cofre: dono da Página, Insta, WhatsApp, cartão, acessos da equipe. Cliente nunca vê.</p>
-            </div>
-          </div>
-          <p class="later-box">Siglas (WABA, token, IDs) vêm depois — são só números desse escritório.</p>
+          <h2>Vitrine e escritório: coisas diferentes</h2>
+          <p class="subtitle">Uma o cliente vê; a outra fica nos bastidores</p>
+          <p>Muita gente acha que basta ter Página no Facebook e Instagram da loja e pronto. Para a API oficial do WhatsApp, não é assim. O <strong>Portfolio empresarial</strong> (nome antigo: Business Manager, sigla BM) é outra camada, que fica por trás.</p>
+          <p>A <strong>vitrine</strong> é o que o público enxerga: posts, fotos, comentários, anúncio rodando. No dia a dia você mexe nisso pelo <strong>Meta Business Suite</strong>, que é o painel “de operação” da presença nas redes.</p>
+          <p>O <strong>escritório</strong> é o que o cliente não vê. É onde a Meta registra quem é dono da Página, do Instagram, do WhatsApp, do cartão de pagamento e de cada permissão da equipe. Esse escritório é o Portfolio. Pense nele como a sede administrativa do negócio dentro da Meta, não como mais uma rede social.</p>
+          <p>Quando mais adiante aparecerem siglas como WABA, token e IDs, lembre que, na prática, são só números e senhas desse escritório, para o seu sistema conversar com o WhatsApp.</p>
         </article>
       </div>
     </section>
@@ -1186,11 +1353,11 @@
         <article class="panel">
           <p class="slide-label">Comece aqui</p>
           <h2>O Portfolio empresarial</h2>
-          <p class="subtitle">Quem ainda fala BM (Business Manager) está falando da mesma coisa</p>
-          <p>O Portfolio é o CNPJ digital da sua empresa dentro da Meta. É uma pasta nos bastidores onde ficam registrados o dono da Página, do Instagram, do número de WhatsApp, da forma de pagamento e quem da equipe pode entrar em cada parte.</p>
-          <p>Você precisa dele porque a Meta não libera disparo em massa para pessoa física. Com o Portfolio você diz ao WhatsApp: sou empresa real, com documentação e responsabilidade sobre essas mensagens. É a licença para operar na API oficial.</p>
-          <p>Lá dentro entram a empresa e os funcionários. Dá para dar acesso para alguém responder mensagens sem entregar o cartão de crédito — crachá da porta da frente não é chave do cofre.</p>
-          <p>Nenhum cliente vê o Portfolio. Na prática você cria a sede com os dados da empresa e depois puxa a Página e o Instagram para dentro, como quem diz: essas vitrines agora pertencem a este escritório. As configurações ficam em <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">business.facebook.com/settings</a>.</p>
+          <p class="subtitle">Quem fala “BM” está falando da mesma coisa</p>
+          <p>O Portfolio funciona como o cadastro empresarial da sua marca dentro da Meta. Ali ficam registrados quem é dono da Página, do Instagram, do WhatsApp, qual cartão paga as conversas e quem da equipe pode fazer o quê.</p>
+          <p>Você precisa dele porque a Meta <strong>não libera envio em massa</strong> no nome de pessoa física. Ao montar o Portfolio, você está dizendo ao WhatsApp: <strong>esta conta representa um negócio real</strong>, com documentação e responsabilidade sobre o que é enviado. É o que <strong>destrava a API oficial</strong>.</p>
+          <p>Dentro do Portfolio você cadastra a empresa e as pessoas que vão trabalhar nela. Dá para <strong>liberar acesso para alguém responder mensagem</strong> sem passar o cartão de crédito da empresa, da mesma forma que um funcionário pode atender na loja sem ter a senha do banco.</p>
+          <p>O cliente final nunca “entra” no Portfolio. Na prática, você abre essa sede com os dados do negócio e depois vincula a Página e o Instagram a ela, como se dissesse: essas vitrines agora pertencem a este escritório. Tudo isso se configura em <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">business.facebook.com/settings</a>.</p>
         </article>
       </div>
     </section>
@@ -1199,11 +1366,10 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Mapa simples</p>
-          <h2>Onde clicar (visão geral)</h2>
-          <p class="subtitle">Três lugares, três funções</p>
-          <p>O <strong>Meta Business Suite</strong> é onde você opera a vitrine no dia a dia: post, caixa de entrada, anúncio. O <strong>Portfolio</strong> é o dono de tudo — pagamento, equipe e a senha permanente da API. O <strong>Meta for Developers</strong> é onde você cria o programa que liga o seu sistema ao WhatsApp.</p>
-          <p>A Página do Facebook sozinha não vira API. No fim do cadastro você copia três códigos; o passo a passo está em “Cadastro — 15 etapas”.</p>
-          <p><a href="#s7">Ir para etapa 1 →</a> · <a href="#s-price-0">Preços</a></p>
+          <h2>Onde clicar, em linguagem simples</h2>
+          <p class="subtitle">Três endereços na internet, cada um com um papel</p>
+          <p>No <strong>Meta Business Suite</strong> você cuida da vitrine no dia a dia, publicando, respondendo a caixa de entrada e acompanhando anúncios. No <strong>Portfolio</strong> você cuida do que é de dono, como pagamento, equipe, permissões e a senha de acesso que não expira para a API. Por outro lado, no <strong>Meta for Developers</strong> você cria o aplicativo técnico que conecta o seu sistema ou software de atendimento ao WhatsApp.</p>
+          <p>Ou seja, <strong>só a Página do Facebook, sozinha, não vira API</strong>. Quando o cadastro estiver completo, você vai copiar <strong>três códigos importantes</strong>, e o passo a passo detalhado está na parte <strong>“Cadastro (15 etapas)”</strong> deste guia. Se quiser seguir agora, <a href="#s7">comece pela etapa 1</a>; se a dúvida for custo, veja também <a href="#s-price-0">preços e mensagens</a>.</p>
         </article>
       </div>
     </section>
@@ -1212,13 +1378,10 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Opcional</p>
-          <h2>Business Suite = só a vitrine</h2>
-          <p class="subtitle">Opcional — se já entendeu o mapa</p>
-          <p>Post, inbox, anúncio. É o volante. Não configura API.</p>
-          <div class="chip-row">
-            <span class="chip">Suite = operar</span>
-            <span class="chip accent">Portfolio = dono</span>
-          </div>
+          <h2>O Business Suite é só a vitrine</h2>
+          <p class="subtitle">Leitura extra, se o mapa já ficou claro</p>
+          <p>O Business Suite é onde você “dirige” o dia a dia da presença nas redes: postar, ver mensagens, olhar resultado de anúncio. Ele não cria App, não gera senha permanente da API e não substitui o API Setup do WhatsApp.</p>
+          <p>Em outras palavras, o <strong>Suite é para operar</strong> o que o público vê, enquanto o <strong>Portfolio é para ser dono</strong> do negócio dentro da Meta. São funções diferentes, e <strong>confundir as duas</strong> é um dos erros mais comuns no cadastro.</p>
         </article>
       </div>
     </section>
@@ -1227,10 +1390,10 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Opcional</p>
-          <h2>Central de Contas = você, pessoa</h2>
-          <p class="subtitle">Opcional</p>
-          <p>Login e senha pessoal. Não é aqui que se cria WhatsApp API.</p>
-          <p>Portfolio = empresa · Developers = programa técnico.</p>
+          <h2>A Central de Contas é você, pessoa física</h2>
+          <p class="subtitle">Leitura extra</p>
+          <p>A Central de Contas é o lugar do seu login e senha pessoais na Meta (como a conta que você usa para entrar). Não é ali que nasce a API do WhatsApp.</p>
+          <p>O <strong>Portfolio representa a empresa</strong>. O <strong>Developers representa o programa técnico</strong> que vai falar com a API. São camadas diferentes, e <strong>misturar as três</strong> é uma das causas mais comuns de travar no cadastro.</p>
         </article>
       </div>
     </section>
@@ -1239,11 +1402,9 @@
       <div class="slide-inner">
         <article class="panel">
           <p class="slide-label">Opcional</p>
-          <h2>Por que vários sites da Meta?</h2>
-          <p class="subtitle">Opcional — App e senha permanente</p>
-          <p><strong>Developers</strong> = programa que liga seu sistema ao WhatsApp. <strong>Portfolio</strong> = dono e senha que não expira em horas.</p>
-          <div class="callout">Senha de teste no Developers expira. Produção: Portfolio → Usuários do sistema.</div>
-          <p><a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">developers.facebook.com/apps</a></p>
+          <h2>Por que a Meta espalha em vários sites?</h2>
+          <p class="subtitle">Leitura extra sobre App e senha</p>
+          <p>No <strong>Developers</strong> você monta o programa que liga o seu sistema ao WhatsApp, enquanto no <strong>Portfolio</strong> você define quem é dono do negócio e gera a senha de acesso que não cai da noite para o dia. Vale lembrar que a senha de teste que aparece no Developers expira rápido; para produção de verdade, a senha estável sai do Portfolio, na área de Usuários do sistema. Os apps ficam em <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">developers.facebook.com/apps</a>.</p>
         </article>
       </div>
     </section>
@@ -1254,9 +1415,8 @@
           <p class="slide-label step">Etapa 1 de 15</p>
           <h2>Começar o cadastro técnico</h2>
           <p class="subtitle">Você já leu vitrine vs escritório?</p>
-          <p>Se sim, siga etapa por etapa. Se não, volte em <a href="#s1">Vitrine vs escritório</a> e <a href="#s2">O Portfolio</a>.</p>
-          <p>Próximo: Página do Facebook, Instagram, Portfolio, Developers, App, número, senha.</p>
-          <p><a href="guia-whatsapp-cloud-api-credenciais.md">Checklist (.md)</a></p>
+          <p>Se sim, siga uma etapa de cada vez, sem pular. Se ainda não, vale voltar em <a href="#s1">Vitrine e escritório</a> e em <a href="#s2">O Portfolio</a>, porque o cadastro técnico fica bem mais fácil depois dessa base.</p>
+          <p>Daqui em diante o caminho passa por Página do Facebook, Instagram, Portfolio, conta de desenvolvedor, App, número de telefone e senha de acesso. No final, use o <a href="#s22">resumo dos IDs</a> para copiar tudo sem trocar um código pelo outro.</p>
         </article>
       </div>
     </section>
@@ -1266,8 +1426,8 @@
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 2 de 15</p>
           <h2>Página do Facebook</h2>
-          <p class="subtitle">Identidade pública — não é a API</p>
-          <p>A Página entra no Portfolio como ativo. Sem ela (ou sem vincular), o ecossistema comercial fica incompleto.</p>
+          <p class="subtitle">É a cara pública da empresa, não é a API</p>
+          <p>A <strong>Página do Facebook</strong> é a vitrine oficial da marca na rede. Ela precisa estar <strong>vinculada ao Portfolio</strong>; sem isso, o ecossistema comercial da Meta fica pela metade e o <strong>cadastro da API costuma travar</strong> mais adiante.</p>
           <p><a href="https://www.facebook.com/pages/create" target="_blank" rel="noopener noreferrer">Criar Página</a></p>
         </article>
       </div>
@@ -1278,8 +1438,8 @@
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 3 de 15</p>
           <h2>Instagram empresarial</h2>
-          <p class="subtitle">Conta business/creator ligada à Página</p>
-          <p>Fecha a fórmula: Face + Insta business = Suite. O Instagram não configura a API do WhatsApp; completa o Business Suite.</p>
+          <p class="subtitle">Perfil profissional ligado à Página</p>
+          <p>O Instagram precisa ser conta empresarial (business ou creator) e estar ligado à Página. Isso fecha o pacote que o Business Suite espera. O Instagram, sozinho, não configura a API do WhatsApp, mas completa a presença da empresa nas redes da Meta.</p>
         </article>
       </div>
     </section>
@@ -1290,7 +1450,7 @@
           <p class="slide-label step">Etapa 4 de 15</p>
           <h2>Meta Business Suite</h2>
           <p class="subtitle">business.facebook.com</p>
-          <p>Gestão de presença social. <strong>Não</strong> cria App, <strong>não</strong> gera Bearer permanente, <strong>não</strong> substitui API Setup.</p>
+          <p>Aqui você gerencia a presença social da empresa. Este painel não cria o App do WhatsApp, não gera a senha permanente da API e não substitui a tela de API Setup no Developers.</p>
           <p><a href="https://business.facebook.com/" target="_blank" rel="noopener noreferrer">Abrir Business Suite</a></p>
         </article>
       </div>
@@ -1300,9 +1460,9 @@
       <div class="slide-inner">
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 5 de 15</p>
-          <h2>Portfolio empresarial (= BM)</h2>
-          <p class="subtitle">Dono de todos os ativos</p>
-          <p>Confirme ou crie o Portfolio. Sem ele: sem WABA de produção, sem pagamento de conversas, sem System User.</p>
+          <h2>Portfolio empresarial (o antigo BM)</h2>
+          <p class="subtitle">Quem é dono de tudo</p>
+          <p>Nesta etapa você confirma se já tem um <strong>Portfolio</strong> ou cria um novo. <strong>Sem ele</strong>, não há conta WhatsApp de produção, não há forma de pagamento das conversas e não há como gerar a <strong>senha estável</strong> pelo System User.</p>
           <p><a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">Configurações do Portfolio</a></p>
         </article>
       </div>
@@ -1313,8 +1473,8 @@
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 6 de 15</p>
           <h2>Vincular Página e Instagram</h2>
-          <p class="subtitle">Settings → Contas</p>
-          <p>Em <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">Settings</a> → Contas → Páginas e Instagram, confirme que os ativos estão no Portfolio correto.</p>
+          <p class="subtitle">Configurações, depois Contas</p>
+          <p>Abra <a href="https://business.facebook.com/settings" target="_blank" rel="noopener noreferrer">Configurações</a>, vá em Contas, depois Páginas e Instagram, e confira se a Página e o perfil certos estão dentro do Portfolio que você vai usar na API.</p>
         </article>
       </div>
     </section>
@@ -1325,7 +1485,7 @@
           <p class="slide-label step">Etapa 7 de 15</p>
           <h2>Conta Meta for Developers</h2>
           <p class="subtitle">Registro de desenvolvedor</p>
-          <p>Escolha perfil <strong>Desenvolvedor</strong> se você vai configurar API e integrações.</p>
+          <p>Na hora de se registrar, escolha o perfil de <strong>Desenvolvedor</strong> se quem vai mexer na API e nas integrações é você ou alguém do time técnico.</p>
           <p><a href="https://developers.facebook.com/async/registration/" target="_blank" rel="noopener noreferrer">Registrar</a></p>
         </article>
       </div>
@@ -1337,12 +1497,7 @@
           <p class="slide-label step">Etapa 8 de 15</p>
           <h2>Criar o App WhatsApp</h2>
           <p class="subtitle">developers.facebook.com/apps</p>
-          <ol>
-            <li><a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">Criar app</a></li>
-            <li>Nome do app</li>
-            <li>Caso de uso: <strong>Conectar com clientes pelo WhatsApp</strong></li>
-            <li>Selecionar seu Portfolio empresarial</li>
-          </ol>
+          <p>Entre em <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener noreferrer">developers.facebook.com/apps</a> e clique em criar um app. Dê um nome que você reconheça depois (pode ser o nome da empresa mais “WhatsApp API”). Na lista de casos de uso, escolha <strong>Conectar com clientes pelo WhatsApp</strong> e selecione o Portfolio empresarial que você montou nos passos anteriores.</p>
           <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started" target="_blank" rel="noopener noreferrer">Get Started</a></p>
         </article>
       </div>
@@ -1354,7 +1509,7 @@
           <p class="slide-label step">Etapa 9 de 15</p>
           <h2>Função do App</h2>
           <p class="subtitle">Licença técnica</p>
-          <p>Sem App: sem webhook oficial, sem Phone Number ID no painel, sem revisão de permissões. Guarde o <strong>App ID</strong>.</p>
+          <p>Sem o App criado, não existe webhook oficial, não aparece o Phone Number ID no painel e não dá para pedir permissão de produção. Anote o <strong>App ID</strong> em um lugar seguro; você vai precisar dele várias vezes.</p>
         </article>
       </div>
     </section>
@@ -1363,9 +1518,9 @@
       <div class="slide-inner">
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 10 de 15</p>
-          <h2>API Setup — WABA</h2>
+          <h2>API Setup e WABA</h2>
           <p class="subtitle">WhatsApp Business Account ID</p>
-          <p>App → <strong>WhatsApp → API Setup</strong>. Crie ou conecte a WABA. Copie o <strong>WhatsApp Business Account ID</strong> (não confundir com Portfolio ID).</p>
+          <p>No menu do App, abra <strong>WhatsApp</strong> e depois <strong>API Setup</strong>. Ali você cria ou conecta a conta WhatsApp Business (WABA). Copie o <strong>WhatsApp Business Account ID</strong> e tome cuidado para não confundir com o ID do Portfolio, que é outro número.</p>
           <p><code>developers.facebook.com/apps/SEU_APP_ID/whatsapp-business/wa-dev-console/</code></p>
         </article>
       </div>
@@ -1377,7 +1532,7 @@
           <p class="slide-label step">Etapa 11 de 15</p>
           <h2>Phone Number ID</h2>
           <p class="subtitle">ID do número na API</p>
-          <p>Adicione número de teste ou real (SMS). O painel exibe o <strong>Phone number ID</strong> para chamadas <code>graph.facebook.com/.../messages</code>.</p>
+          <p>Você pode começar com o número de teste da Meta ou cadastrar o número real da empresa (com confirmação por SMS). O painel mostra o <strong>Phone Number ID</strong>, que é o código que o seu sistema usa nas chamadas para <code>graph.facebook.com/.../messages</code>.</p>
           <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/registration/" target="_blank" rel="noopener noreferrer">Registrar número</a></p>
         </article>
       </div>
@@ -1389,7 +1544,7 @@
           <p class="slide-label step">Etapa 12 de 15</p>
           <h2>Token temporário vs permanente</h2>
           <p class="subtitle">Não use token de teste em produção</p>
-          <p>Token do API Setup expira rápido. Produção: <strong>System User</strong> no Portfolio.</p>
+          <p>A senha que o API Setup gera na hora serve para teste e expira rápido. Para ambiente de produção, a senha correta vem do <strong>System User</strong> criado no Portfolio.</p>
           <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens" target="_blank" rel="noopener noreferrer">Access tokens</a></p>
         </article>
       </div>
@@ -1401,12 +1556,7 @@
           <p class="slide-label step">Etapa 13 de 15</p>
           <h2>System User + Bearer permanente</h2>
           <p class="subtitle">business.facebook.com/settings</p>
-          <ol>
-            <li>Usuários do sistema → criar Admin</li>
-            <li>Atribuir App + WABA (controle total)</li>
-            <li>Gerar token: <code>business_management</code>, <code>whatsapp_business_management</code>, <code>whatsapp_business_messaging</code></li>
-            <li>Guardar em .env seguro</li>
-          </ol>
+          <p>Em Configurações do Portfolio, abra Usuários do sistema e crie um usuário com perfil de administrador, com um nome que você reconheça depois, como “whatsapp-api”. Em seguida, atribua a ele o App e a conta WhatsApp da empresa, com permissão total. Depois clique em gerar token, marque as permissões de gestão do negócio e do WhatsApp que o painel mostrar, e guarde o resultado em local seguro, por exemplo um arquivo de ambiente que não vai para o repositório de código.</p>
         </article>
       </div>
     </section>
@@ -1417,7 +1567,7 @@
           <p class="slide-label step">Etapa 14 de 15</p>
           <h2>Gerenciador do WhatsApp</h2>
           <p class="subtitle">Templates e visão do número</p>
-          <p><a href="https://business.facebook.com/latest/whatsapp_manager/" target="_blank" rel="noopener noreferrer">WhatsApp Manager</a> — templates e limites. Phone Number ID para código continua no API Setup.</p>
+          <p>No <a href="https://business.facebook.com/latest/whatsapp_manager/" target="_blank" rel="noopener noreferrer">Gerenciador do WhatsApp</a> você acompanha modelos de mensagem, limites e visão geral do número. Para integração no código, o Phone Number ID continua sendo o que aparece no API Setup do App.</p>
         </article>
       </div>
     </section>
@@ -1427,14 +1577,13 @@
         <article class="panel tip-zone">
           <p class="slide-label step">Etapa 15 de 15</p>
           <h2>Depois dos credenciais</h2>
-          <p class="subtitle">Base pronta — migração continua</p>
-          <p>Com WABA ID + Phone Number ID + Bearer você fechou a base. Ainda: webhook HTTPS, templates aprovados, App Review, pagamento. Ao migrar número do celular ou API não oficial, <strong>desligue o antigo antes</strong>.</p>
-          <p><a href="guia-whatsapp-cloud-api-credenciais.md">guia-whatsapp-cloud-api-credenciais.md</a></p>
+          <p class="subtitle">Base pronta. A migração continua</p>
+          <p>Com o WABA ID, o Phone Number ID e o Bearer token em mãos, a base de credenciais está fechada, mas ainda não é produção completa. Além disso, você vai precisar configurar o webhook em HTTPS, ter modelos de mensagem aprovados, passar pelo App Review e deixar o pagamento ativo no Portfolio. Se for migrar um número que hoje está no celular ou em alguma API não oficial, desligue o antigo antes de registrar na Meta, porque usar os dois ao mesmo tempo costuma gerar conflito. Para copiar os códigos com calma, veja o <a href="#s22">resumo dos IDs</a>; para entender cobrança, abra <a href="#s-price-0">preços e modelos de mensagem</a>.</p>
         </article>
       </div>
     </section>
 
-    <!-- —— PREÇOS E TEMPLATES (seção separada) —— -->
+    <!-- PREÇOS E TEMPLATES (seção separada) -->
 
     <section class="slide" id="s-price-0" data-title="Preços">
       <div class="slide-inner">
@@ -1442,64 +1591,44 @@
           <p class="price-section-title">Seção separada · custos</p>
           <p class="slide-label price">Preços e templates</p>
           <h1>Quanto custa usar a API oficial?</h1>
-          <p class="subtitle">Cobrança por mensagem entregue — não por “ter a API ligada”</p>
-          <p>A Meta cobra quando uma mensagem é <strong>entregue</strong> ao usuário (não apenas quando você clica em enviar). O valor depende do <strong>país do destinatário</strong> e da <strong>categoria</strong> da mensagem.</p>
-          <p>Regra de ouro para não surpreender na fatura:</p>
-          <ul>
-            <li><strong>Fora da janela de 24h</strong> → você precisa de <strong>template</strong> (modelo) aprovado → <strong>há cobrança</strong> (exceto casos gratuitos abaixo).</li>
-            <li><strong>Dentro da janela de 24h</strong> (cliente falou com você) → você <strong>responde com texto livre</strong> → em geral <strong>não paga</strong> como disparo de template de marketing.</li>
-          </ul>
+          <p class="subtitle">Você paga por mensagem entregue, não por “ter a API ligada”</p>
+          <p>A Meta cobra quando a mensagem <strong>chega de fato no celular</strong> da pessoa, e não só no momento em que você aperta enviar. O valor muda conforme o <strong>país de quem recebe</strong> e o <strong>tipo da mensagem</strong>.</p>
+          <p>A regra principal é esta: <strong>a Meta cobra quando a empresa inicia a conversa</strong>; <strong>não cobra quando você responde um cliente que te procurou primeiro</strong>, dentro de 24 horas. Os detalhes estão em <a href="#s-price-2">como funcionam os custos</a>. Se a empresa inicia o contato, o texto precisa ser cadastrado e liberado antes; isso está explicado em <a href="#s-price-1">mensagens para iniciar contato</a>.</p>
           <p>Fonte oficial: <a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Preços da Plataforma WhatsApp Business</a></p>
         </article>
       </div>
     </section>
 
-    <section class="slide" id="s-price-1" data-title="Template">
+    <section class="slide" id="s-price-2" data-title="Custos">
       <div class="slide-inner">
         <article class="panel tip-zone">
-          <p class="slide-label price">Preços · templates</p>
-          <h2>Por que a Meta exige template (modelo)?</h2>
-          <p class="subtitle">Não é burocracia — é classificação + cobrança</p>
-          <p>Quando você quer <strong>iniciar conversa</strong> ou falar depois que a janela de 24h fechou, não pode mandar qualquer texto solto. A Meta obriga usar um <strong>template</strong> (modelo de mensagem) porque precisa:</p>
-          <div class="why-template">
-            <ol>
-              <li><strong>Pré-aprovar</strong> o conteúdo antes de ir para milhares de pessoas (anti-spam).</li>
-              <li><strong>Classificar</strong> a mensagem em uma das quatro categorias oficiais.</li>
-              <li><strong>Cobrar</strong> de acordo com essa categoria e o mercado (país) do cliente.</li>
-            </ol>
-          </div>
-          <p>Você cria o template no Gerenciador do WhatsApp, envia para análise, e só depois de <strong>aprovado</strong> usa o nome do template na API. Cada envio de template entregue pode gerar tarifa — conforme a categoria aprovada.</p>
-          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview" target="_blank" rel="noopener noreferrer">Documentação de templates</a></p>
+          <p class="slide-label price">Preços · custos</p>
+          <h2>Como funcionam os custos (na prática)</h2>
+          <p class="subtitle">Quem tomou a iniciativa de mandar a mensagem</p>
+
+          <p><strong>A Meta cobra quando a sua empresa inicia a conversa.</strong> Se a empresa manda a primeira mensagem, ou volta a falar depois que o período gratuito de 24 horas acabou, haverá cobrança.</p>
+
+          <p>Se o <strong>cliente procura a sua empresa</strong>, <strong>você nunca paga para responder</strong>. Quando ele manda mensagem, ou clica em “Falar no WhatsApp” no anúncio ou na Página do Facebook, a Meta abre <strong>24 horas</strong> para você atendê-lo. Nesse tempo, a conversa é <strong>livre</strong>: texto, áudio, foto ou vídeo, <strong>sem cobrança</strong> de contato ativo.</p>
+
+          <p>Se o cliente some e as <strong>24 horas acabam</strong>, a conversa gratuita encerra. Se a <strong>empresa quiser falar de novo</strong> depois disso, a Meta trata como <strong>novo contato iniciado pela empresa</strong>: <strong>haverá cobrança de novo</strong>. Qual texto pode ser usado nesse caso está em <a href="#s-price-1">mensagens para iniciar contato</a> (<strong>leia essa parte antes de disparar campanha</strong>).</p>
+
+          <p>No Brasil, por exemplo, a calculadora da Meta mostra mensagens de promoção em dólar por volta de <span class="price-highlight">US$ 0,0625</span> <span class="price-note">por mensagem entregue quando a empresa inicia; confira a tabela atual</span>.</p>
         </article>
       </div>
     </section>
 
-    <section class="slide" id="s-price-2" data-title="Janela 24h">
+    <section class="slide" id="s-price-1" data-title="Mensagens ativas">
       <div class="slide-inner">
         <article class="panel tip-zone">
-          <p class="slide-label price">Preços · intuitivo</p>
-          <h2>Quando você paga vs quando não paga</h2>
-          <p class="subtitle">Pense em “quem abriu a conversa” e “janela aberta ou fechada”</p>
-
-          <div class="flow-grid">
-            <div class="flow-card free">
-              <h3><span class="flow-badge">Grátis</span> Cliente falou · janela de 24h aberta</h3>
-              <p>O cliente te mandou mensagem (ou entrou por ponto gratuito). A <strong>janela de 24h</strong> está aberta. Você <strong>responde</strong> com mensagem normal (texto, áudio, etc.) — <strong>sem template de abertura</strong>.</p>
-              <p><strong>Não é um “disparo de template”</strong> cobrado como marketing. Mensagens de <strong>serviço</strong> não são cobradas; utilidade enviada <em>em resposta</em> ao cliente também não entra na mesma lógica de cobrança de template outbound.</p>
-            </div>
-
-            <p class="flow-arrow">↓</p>
-
-            <div class="flow-card paid">
-              <h3><span class="flow-badge">Pago</span> Você quer falar primeiro · ou janela fechou</h3>
-              <p>Passou 24h sem o cliente falar, ou você quer <strong>iniciar</strong> a conversa (campanha, aviso, cobrança). Aí você <strong>obrigatoriamente</strong> envia um <strong>template aprovado</strong>.</p>
-              <p><strong>Cada template entregue</strong> pode ser cobrado. Exemplo Brasil, categoria Marketing, em USD: <span class="price-highlight">US$ 0,0625</span> <span class="price-note">por mensagem entregue (consulte tabela atual na Meta)</span>.</p>
-            </div>
-          </div>
-
-          <div class="callout">
-            <strong>Resumo em uma frase:</strong> cobra na hora de enviar o <em>primeiro</em> template (abrir ou reabrir fora da janela). <strong>Não cobra</strong> como esse disparo quando você só <em>responde</em> o cliente com a janela de 24h aberta.
-          </div>
+          <p class="slide-label price">Preços · mensagens ativas</p>
+          <h2>Mensagens para iniciar contato (como funciona)</h2>
+          <p class="subtitle">O que fazer antes da empresa mandar a primeira mensagem</p>
+          <p>Esta parte responde uma dúvida comum: se a Meta cobra quando a empresa inicia a conversa, <strong>como eu mando esse texto?</strong> Você não digita na hora. O processo é cadastrar antes e esperar liberação.</p>
+          <p><strong>Primeiro</strong>, abra o <a href="https://business.facebook.com/latest/whatsapp_manager/" target="_blank" rel="noopener noreferrer">Gerenciador do WhatsApp</a> e <strong>crie a mensagem</strong> com o texto que a empresa quer usar (por exemplo: “Olá, sua fatura vence amanhã”).</p>
+          <p><strong>Depois</strong>, <strong>envie para análise da Meta</strong>. Eles verificam o conteúdo, classificam o tipo (promoção, aviso de pedido, código de login, etc.) e <strong>liberam ou pedem ajuste</strong>.</p>
+          <p><strong>Só depois de liberada</strong> essa mensagem o seu sistema pode usá-la para <strong>iniciar conversa</strong> com clientes. <strong>Cada envio entregue</strong> desse tipo <strong>é cobrado</strong>, conforme a regra do slide anterior.</p>
+          <p>Resumo da ordem: <strong>escreve no painel → Meta analisa e libera → aí sua empresa pode iniciar conversa com aquele texto → a Meta cobra a entrega.</strong></p>
+          <p><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview" target="_blank" rel="noopener noreferrer">Documentação oficial sobre mensagens cadastradas</a></p>
         </article>
       </div>
     </section>
@@ -1509,17 +1638,12 @@
         <article class="panel tip-zone">
           <p class="slide-label price">Preços · categorias</p>
           <h2>As 4 categorias de mensagem</h2>
-          <p class="subtitle">A Meta classifica cada template em uma delas — o preço muda</p>
-          <p>Na calculadora oficial você escolhe mercado (ex.: Brazil), moeda (ex.: USD) e categoria. A tarifa é por <strong>mensagem entregue</strong> naquela categoria.</p>
+          <p class="subtitle">A Meta classifica cada template em uma delas. O preço muda</p>
+          <p>Na calculadora oficial da Meta você escolhe o país (por exemplo Brasil), a moeda e o tipo de mensagem. O preço é sempre por <strong>mensagem que chegou</strong> no celular do cliente.</p>
 
-          <div class="cat-grid">
-            <div class="cat-pill">Marketing<span>Promoções, ofertas, reengajamento</span></div>
-            <div class="cat-pill">Utilidade<span>Atualização de pedido, agendamento, alerta</span></div>
-            <div class="cat-pill">Autenticação<span>Códigos OTP, verificação de login</span></div>
-            <div class="cat-pill">Serviço<span>Resposta ao cliente na janela — sem cobrança</span></div>
-          </div>
+          <p>A Meta divide os modelos em <strong>quatro famílias</strong>. <strong>Marketing</strong> é promoção, oferta e mensagem do tipo “sumiu, volta aqui”. <strong>Utilidade</strong> é aviso de pedido, agendamento ou lembrete de entrega. <strong>Autenticação</strong> é código de login ou confirmação. <strong>Serviço</strong> é resposta de atendimento enquanto o prazo de <strong>24 horas</strong> está aberto, e <strong>a Meta não cobra</strong>.</p>
 
-          <p><strong>Exemplo real (calculadora Meta, Brasil, USD):</strong> template <strong>Marketing</strong> = <strong>US$ 0,0625</strong> por mensagem entregue. Outras categorias e países têm valores diferentes — sempre confira a tabela atualizada.</p>
+          <p>Um exemplo real da calculadora, para o Brasil em dólar, é um modelo de Marketing entregue por cerca de <strong>US$ 0,0625</strong> cada. Além disso, outros países e outras categorias mudam o valor, por isso vale abrir a tabela antes de fechar orçamento.</p>
           <p><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Abrir calculadora de taxas</a></p>
         </article>
       </div>
@@ -1530,15 +1654,10 @@
         <article class="panel tip-zone">
           <p class="slide-label price">Preços · gratuito</p>
           <h2>O que a Meta não cobra (ou cobra menos)</h2>
-          <p class="subtitle">Trechos úteis da página oficial de preços</p>
-          <ul>
-            <li><strong>Mensagens de serviço</strong> — não cobradas (atendimento dentro da conversa).</li>
-            <li><strong>Utilidade em resposta</strong> — mensagens de utilidade que a empresa envia <em>em resposta</em> ao usuário não são cobradas da mesma forma que disparos ativos.</li>
-            <li><strong>Ponto de entrada gratuito (72h)</strong> — cliente veio por anúncio “clique para WhatsApp” ou botão na Página do Facebook: mensagens podem ser gratuitas por <strong>72 horas</strong> (todas as categorias nesse período, conforme regras Meta).</li>
-            <li><strong>Volume</strong> — mais envios de utilidade/autenticação podem trazer faixas de preço melhores (níveis de volume).</li>
-          </ul>
-          <p>A cobrança usa o país do <strong>usuário que recebe</strong> e a categoria atribuída ao template no momento da aprovação. Template reclassificado ou rejeitado muda o jogo — acompanhe o Gerenciador do WhatsApp.</p>
-          <p><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Preços simples e transparentes — WhatsApp Business</a></p>
+          <p class="subtitle">O que a página oficial de preços destaca</p>
+          <p>A Meta <strong>não cobra</strong> o <strong>atendimento dentro da conversa aberta</strong>. Quando a empresa manda um aviso de pedido ou agendamento <strong>justamente porque o cliente chamou</strong>, a cobrança <strong>não segue a mesma regra</strong> de contato ativo. Se a pessoa chegou pelo anúncio com botão de WhatsApp ou pelo botão na Página do Facebook, a Meta libera até <strong>72 horas de mensagens gratuitas</strong>, conforme as regras da plataforma.</p>
+          <p>Por outro lado, quem envia muito aviso de utilidade ou código de login pode cair em faixas de preço melhores por volume. O país usado na conta é o do cliente que recebe, e o tipo definido na aprovação do modelo. Se a Meta reclassificar ou reprovar um modelo, o preço muda, por isso vale acompanhar o Gerenciador do WhatsApp com frequência.</p>
+          <p><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer">Preços simples e transparentes (WhatsApp Business)</a></p>
         </article>
       </div>
     </section>
@@ -1547,21 +1666,9 @@
       <div class="slide-inner">
         <article class="panel tip-zone">
           <p class="slide-label">Resumo</p>
-          <h2>IDs para não trocar</h2>
-          <div class="table-scroll">
-            <table class="id-table">
-              <thead>
-                <tr><th>Nome</th><th>O que é</th><th>Onde</th></tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>Portfolio ID</strong></td><td>Empresa (BM)</td><td>Settings</td></tr>
-                <tr><td><strong>WABA ID</strong></td><td>Conta WhatsApp Business</td><td>API Setup</td></tr>
-                <tr><td><strong>Phone Number ID</strong></td><td>Número na API</td><td>API Setup</td></tr>
-                <tr><td><strong>App ID</strong></td><td>App Developers</td><td>developers.facebook.com/apps</td></tr>
-                <tr><td><strong>Bearer token</strong></td><td>Token permanente</td><td>System User</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <h2>Códigos para copiar sem trocar um pelo outro</h2>
+          <p>No fim do cadastro você vai ver vários números parecidos, e cada um tem um papel diferente. O <strong>Portfolio ID</strong> identifica a empresa no painel da Meta, o antigo Business Manager; você encontra nas configurações do Portfolio. O <strong>WABA ID</strong> é a conta WhatsApp Business da empresa, e aparece no API Setup do App, junto com o <strong>Phone Number ID</strong>, que é o identificador do número na API, ou seja, não é o DDD nem o +55 que você digita no dia a dia.</p>
+          <p>Além disso, o <strong>App ID</strong> é o identificador do aplicativo criado no Developers, em developers.facebook.com/apps. Por fim, o <strong>Bearer token</strong> é a senha de acesso longa para produção, gerada pelo usuário do sistema no Portfolio. Guarde tudo em local seguro e confira duas vezes antes de colar no seu sistema ou backend.</p>
         </article>
       </div>
     </section>
@@ -1575,16 +1682,16 @@
 
   <script>
     (function () {
-      /* —— Glossário: tooltips automáticos —— */
+      /* Glossário: tooltips automáticos */
       var GLOSSARY = [
         ["WhatsApp Cloud API", "API oficial da Meta para enviar e receber mensagens WhatsApp via código. Também chamada API de Nuvem."],
         ["API oficial", "Integração autorizada pela Meta (não usa WhatsApp Web improvisado nem bibliotecas não oficiais)."],
-        ["API não oficial", "Soluções como Evolution, Baileys ou similares — não são suportadas pela Meta e podem quebrar ou banir número."],
+        ["API não oficial", "Soluções como Evolution, Baileys ou similares. Não são suportadas pela Meta e podem quebrar ou banir número."],
         ["Phone Number ID", "Identificador do seu número dentro da API (não é o +55). Aparece no API Setup do App."],
-        ["WhatsApp Business Account ID", "ID da conta WhatsApp Business (WABA). Muitos chamam de \"business id\" — não confundir com Portfolio."],
-        ["WABA ID", "Mesmo que WhatsApp Business Account ID — ID da conta WhatsApp Business na Meta."],
+        ["WhatsApp Business Account ID", "ID da conta WhatsApp Business (WABA). Muitos chamam de \"business id\", não confundir com Portfolio."],
+        ["WABA ID", "Mesmo que WhatsApp Business Account ID. É o ID da conta WhatsApp Business na Meta."],
         ["Bearer token permanente", "Token de acesso longo, gerado pelo System User no Portfolio. Usado em Authorization: Bearer nas requisições."],
-        ["Bearer permanente", "Token que não expira em poucas horas — criado em Usuários do sistema (Portfolio)."],
+        ["Bearer permanente", "Token que não expira em poucas horas, criado em Usuários do sistema (Portfolio)."],
         ["Bearer token", "Chave de acesso colocada no cabeçalho HTTP para a API aceitar suas requisições."],
         ["Bearer", "Formato do token: você envia \"Authorization: Bearer SEU_TOKEN\" em cada chamada à API."],
         ["Meta Business Portfolio", "Sinônimo de Portfolio empresarial e Business Manager (BM)."],
@@ -1593,48 +1700,48 @@
         ["Meta for Developers", "Portal onde você cria o App e acessa API Setup, documentação e webhooks."],
         ["Business Manager", "Nome antigo do Portfolio empresarial (BM). Mesma coisa."],
         ["Account Center", "Central de Contas da pessoa física (login, senha). Não é onde se cria WABA nem App."],
-        ["Central de Contas", "Mesmo que Account Center — configurações da sua conta pessoal Meta."],
+        ["Central de Contas", "Mesmo que Account Center: configurações da sua conta pessoal Meta."],
         ["WhatsApp Manager", "Painel para templates de mensagem, limites e gestão do número WhatsApp Business."],
         ["Gerenciador do WhatsApp", "Interface em business.facebook.com para modelos (templates) e configuração do número."],
         ["API Setup", "Tela no App (Developers → WhatsApp) onde você conecta WABA, vê Phone Number ID e token de teste."],
         ["App Review", "Processo em que a Meta aprova permissões do App para uso em produção com clientes reais."],
         ["System User", "Usuário técnico do Portfolio usado para gerar token permanente (não é sua conta pessoal)."],
-        ["Usuários do sistema", "Onde você cria o System User e gera o token permanente — em business.facebook.com/settings."],
+        ["Usuários do sistema", "Onde você cria o System User e gera o token permanente, em business.facebook.com/settings."],
         ["Portfolio ID", "Identificador do seu Portfolio (BM). Diferente do WABA ID e do Phone Number ID."],
         ["App ID", "Identificador do App criado no Meta for Developers."],
         ["Graph API", "API da Meta usada pelo WhatsApp Cloud API (URLs graph.facebook.com)."],
         ["webhook", "URL do seu servidor que recebe avisos quando chega mensagem ou muda status (entregue, lida)."],
         ["templates", "Modelos de mensagem pré-aprovados pela Meta. Obrigatórios para falar com cliente fora da janela de 24h."],
-        ["token permanente", "Token de longa duração do System User — use em produção, não o token rápido do API Setup."],
-        ["token temporário", "Token gerado no API Setup para teste — expira em poucas horas."],
+        ["token permanente", "Token de longa duração do System User. Use em produção, não o token rápido do API Setup."],
+        ["token temporário", "Token gerado no API Setup para teste. Expira em poucas horas."],
         ["token de teste", "Mesmo que token temporário do painel API Setup."],
         ["Instagram business", "Conta Instagram profissional (business ou creator) ligada à Página do Facebook."],
-        ["conta empresarial", "No Instagram: perfil business/creator, não pessoal — exigido para o Business Suite completo."],
+        ["conta empresarial", "No Instagram: perfil business/creator, não pessoal, exigido para o Business Suite completo."],
         ["Página do Facebook", "Perfil comercial no Facebook vinculado ao Portfolio."],
-        ["WhatsApp Business Account", "Conta WhatsApp Business (WABA) — container do número na API oficial."],
-        ["WABA", "WhatsApp Business Account — a \"conta\" WhatsApp Business dentro da Meta."],
-        ["Developers", "Área developers.facebook.com — Apps, API e documentação técnica."],
-        ["Portfolio", "Portfolio empresarial / BM — dono dos ativos e do token permanente."],
-        ["Página do Face", "Página do Facebook da empresa — vitrine pública, não é a API."],
+        ["WhatsApp Business Account", "Conta WhatsApp Business (WABA): é o container do número na API oficial."],
+        ["WABA", "WhatsApp Business Account, a \"conta\" WhatsApp Business dentro da Meta."],
+        ["Developers", "Área developers.facebook.com: Apps, API e documentação técnica."],
+        ["Portfolio", "Portfolio empresarial / BM: dono dos ativos e do token permanente."],
+        ["Página do Face", "Página do Facebook da empresa: vitrine pública, não é a API."],
         ["ativo", "Recurso vinculado ao Portfolio: Página, Instagram, WABA, etc."],
         ["ativos", "Páginas, contas Instagram, WABAs e outros recursos ligados ao Portfolio."],
         ["HTTPS", "Conexão segura obrigatória para URL de webhook em produção."],
-        ["produção", "Ambiente real com clientes — exige token permanente, App Review e pagamento à Meta."],
+        ["produção", "Ambiente real com clientes: exige token permanente, App Review e pagamento à Meta."],
         ["janela de 24h", "Período após o cliente mandar mensagem em que você pode responder com texto livre (sem template)."],
         ["migração", "Processo de levar um número do WhatsApp comum ou API não oficial para a API oficial da Meta."],
         ["número de teste", "Número fornecido pela Meta no API Setup para aprender sem usar seu chip real."],
         ["permissões", "Autorizações do App (ex.: whatsapp_business_messaging) para enviar mensagens e gerenciar conta."],
         ["template", "Modelo de mensagem pré-aprovado pela Meta. Obrigatório para iniciar conversa ou falar fora da janela de 24h."],
-        ["modelo", "Mesmo que template — mensagem com texto fixo aprovado antes do envio em massa."],
+        ["modelo", "Mesmo que template: mensagem com texto fixo aprovado antes do envio em massa."],
         ["mensagem entregue", "A Meta cobra quando a mensagem chega ao celular do usuário, não só quando você clica em enviar."],
-        ["categoria de mensagem", "Marketing, Utilidade, Autenticação ou Serviço — define o preço e as regras."],
+        ["categoria de mensagem", "Marketing, Utilidade, Autenticação ou Serviço. Define o preço e as regras."],
         ["mensagem de marketing", "Promoção, oferta, reengajamento. Ex.: US$ 0,0625 por entrega no Brasil (USD, confira tabela)."],
         ["mensagem de utilidade", "Pedido, agendamento, alerta. Cobrada se for disparo ativo; em resposta ao cliente, regras diferentes."],
         ["mensagem de autenticação", "Código OTP / verificação. Tem tabela própria e descontos por volume."],
-        ["mensagem de serviço", "Resposta de atendimento na janela aberta — a Meta não cobra por elas."],
-        ["disparo de template", "Envio de um modelo aprovado — é quando entra a cobrança (fora da janela ou início de conversa)."],
-        ["ponto de entrada gratuito", "Cliente veio por anúncio Clique para WhatsApp ou botão na Página: até 72h de mensagens gratuitas (regras Meta)."],
-        ["clique para WhatsApp", "Anúncio que abre conversa no WhatsApp — pode ativar janela gratuita de 72 horas."]
+        ["mensagem de serviço", "Resposta de atendimento na janela aberta. A Meta não cobra por elas."],
+        ["disparo de template", "Envio de um modelo aprovado: é quando entra a cobrança (fora da janela ou início de conversa)."],
+        ["cliente pelo anúncio ou página", "Quando a pessoa clica em Falar no WhatsApp no anúncio ou na Página do Facebook: até 72 horas de mensagens podem ser gratuitas (regras da Meta)."],
+        ["clique para WhatsApp", "Anúncio que abre conversa no WhatsApp. Pode ativar janela gratuita de 72 horas."]
       ];
 
       function escapeRegex(s) {
@@ -1766,12 +1873,36 @@
 
       document.addEventListener("scroll", hideTooltip, { passive: true });
 
-      /* —— Modal obrigatório —— */
+      /* Modais introdutórios (4 passos) */
       var introModal = document.getElementById("intro-modal");
-      var introBtn = document.getElementById("intro-modal-btn");
+      var introNext = document.getElementById("intro-modal-next");
+      var introBack = document.getElementById("intro-modal-back");
+      var introFoot = document.getElementById("intro-modal-foot");
+      var introStepLabel = document.getElementById("intro-modal-step-label");
+      var introPanes = document.querySelectorAll(".intro-modal-pane");
+      var introDots = document.querySelectorAll(".intro-modal-dot");
       var toggle = document.getElementById("sidebar-toggle");
+      var introStep = 1;
+      var introTotal = 5;
 
-      document.body.classList.add("modal-open");
+      var introFootnotes = [
+        "O que este guia explica.",
+        "Quem manda a mensagem primeiro: você ou o cliente.",
+        "Exemplo com horários do dia a dia.",
+        "Como cadastrar o texto antes de iniciar contato.",
+        "O que preparar no cadastro da API."
+      ];
+
+      var introSkipped = false;
+      try {
+        introSkipped = sessionStorage.getItem("guiaWaIntroDone") === "5";
+      } catch (e) {}
+
+      if (introSkipped) {
+        introModal.classList.add("is-hidden");
+      } else {
+        document.body.classList.add("modal-open");
+      }
 
       function revealVisiblePanels() {
         document.querySelectorAll(".panel").forEach(function (panel) {
@@ -1782,18 +1913,52 @@
         });
       }
 
+      function setIntroStep(step) {
+        introStep = step;
+        introPanes.forEach(function (pane) {
+          var n = parseInt(pane.getAttribute("data-step"), 10);
+          var on = n === step;
+          pane.classList.toggle("is-active", on);
+          pane.hidden = !on;
+        });
+        introDots.forEach(function (dot) {
+          dot.classList.toggle("is-active", parseInt(dot.getAttribute("data-dot"), 10) === step);
+        });
+        if (introStepLabel) introStepLabel.textContent = "Passo " + step + " de " + introTotal;
+        if (introFoot) introFoot.textContent = introFootnotes[step - 1] || "";
+        if (introBack) introBack.hidden = step <= 1;
+        if (introNext) introNext.textContent = step >= introTotal ? "Começar o guia" : "Continuar";
+        var titles = ["intro-modal-title", "intro-modal-title-2", "intro-modal-title-3", "intro-modal-title-4", "intro-modal-title-5"];
+        var titleEl = document.getElementById(titles[step - 1]);
+        if (titleEl) introModal.setAttribute("aria-labelledby", titleEl.id);
+      }
+
       function closeIntroModal() {
         introModal.classList.add("is-hidden");
         document.body.classList.remove("modal-open");
         revealVisiblePanels();
         toggle.focus();
+        try { sessionStorage.setItem("guiaWaIntroDone", "5"); } catch (e) {}
       }
 
-      introBtn.addEventListener("click", closeIntroModal);
+      if (introNext) {
+        introNext.addEventListener("click", function () {
+          if (introStep < introTotal) setIntroStep(introStep + 1);
+          else closeIntroModal();
+        });
+      }
+
+      if (introBack) {
+        introBack.addEventListener("click", function () {
+          if (introStep > 1) setIntroStep(introStep - 1);
+        });
+      }
+
+      setIntroStep(1);
 
       var isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-      /* —— Painéis: no mobile tudo visível de imediato —— */
+      /* Painéis: no mobile tudo visível de imediato */
       if (isMobile) {
         document.querySelectorAll(".panel").forEach(function (panel) {
           panel.classList.add("is-visible");
@@ -1812,7 +1977,7 @@
         });
       }
 
-      /* —— Sidebar (fechada por padrão) —— */
+      /* Sidebar (fechada por padrão) */
       var sidebar = document.getElementById("sidebar");
       var backdrop = document.getElementById("sidebar-backdrop");
       var sidebarClose = document.getElementById("sidebar-close");
@@ -1841,6 +2006,10 @@
       backdrop.addEventListener("click", closeSidebar);
 
       document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !introModal.classList.contains("is-hidden")) {
+          if (introStep > 1) setIntroStep(introStep - 1);
+          return;
+        }
         if (e.key !== "Escape") return;
         if (!introModal.classList.contains("is-hidden")) return;
         if (sidebar.classList.contains("open")) closeSidebar();
